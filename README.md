@@ -1,8 +1,10 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Beyond Imagination 홍보 홈페이지 
 
-## Getting Started
+[Next.js](https://nextjs.org/) 프로젝트 bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-First, run the development server:
+## 시작하기
+
+첫번째, 개발 서버 실행:
 
 ```bash
 npm run dev
@@ -10,7 +12,7 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+브라우저를 열어서 [http://localhost:3000](http://localhost:3000)에 접속하여 결과 확인하기 
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
