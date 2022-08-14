@@ -1,8 +1,8 @@
 import styles from '../../styles/layout.module.css'
 
-const Footer = () => {
+const Footer = ({ className }) => {
   return (
-    <footer className={`${styles.footer} px-12`}>
+    <footer className={`${styles.footer} ${className}`}>
       © Beyond Imagination. 2022 All rights reserved
     </footer>
   )

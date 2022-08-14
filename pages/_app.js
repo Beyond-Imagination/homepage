@@ -5,11 +5,13 @@ import Footer from '../components/layout/Footer'
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <Header />
-      <main className={`mt-16`}>
+      <Header
+        className={`flex justify-between px-12 fixed top-0 w-full bg-black`}
+      />
+      <main className={`mt-16 px-12 flex-1 h-full`}>
         <Component {...pageProps} />
       </main>
-      <Footer></Footer>
+      <Footer className={`px-12`}></Footer>
     </>
   )
 }
