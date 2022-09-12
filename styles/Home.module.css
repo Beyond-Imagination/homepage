@@ -94,21 +94,11 @@
   margin-left: 0.5rem;
 }
 
-.member_wrap {
-  height: 650px;
-  padding-bottom: 20px;
-  padding-right: 0;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 .member {
+  height: 650px;
   width: 100%;
   background-color: #f8f7f7;
   padding: 20px;
-  height: 100%;
 
   display: flex;
   flex-direction: column;
