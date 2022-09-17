@@ -4,7 +4,8 @@ import Description from '@/components/member/Description.member'
 import styles from '../../styles/Home.module.css'
 
 function CardMember({ item }) {
-  const { captain, photo, name, company, join_date, description } = item.fields
+  const { captain, photo, name, company, join_date, leave_date, description } =
+    item.fields
   return (
     <div className={`${styles.member_wrap}`}>
       <div
@@ -20,7 +21,7 @@ function CardMember({ item }) {
           />
         </div>
         <Name name={name} company={company}></Name>
-        <Period start_at={join_date}></Period>
+        <Period start_at={join_date} end_at={leave_date}></Period>
         <Description description={description}></Description>
       </div>
     </div>
