@@ -2,18 +2,11 @@ import { contentfulClientApi } from '@/utils/contentfu-api'
 import CardList from '@/components/member/CardList.member'
 
 function Member(props) {
-  console.log(props)
-  const { members, left_members } = props
+  const { members } = props
   return (
     <div className={`h-full`}>
-      <div className={`flex justify-center`}>
-        <h1 className={`text-4xl font-bold my-12`}>팀원 소개</h1>
-      </div>
-      <CardList members={members}></CardList>
-      <div className={`flex justify-center`}>
-        <h1 className={`text-4xl font-bold my-12`}>탈퇴 멤버</h1>
-      </div>
-      <CardList members={left_members}></CardList>
+      <CardList title="팀원 소개" members={members.remain_member}></CardList>
+      <CardList title="탈퇴 멤버" members={members.left_member}></CardList>
     </div>
   )
 }
@@ -29,19 +22,19 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      members: await getEntities('member'),
-      left_members: await getEntities('left_member'),
+      members: await getEntities(),
     }, // will be passed to the page component as props
   }
 }
 
-async function getEntities(content_type) {
-  const members = []
+async function getEntities() {
   const entries = await contentfulClientApi.getEntries({
     select: 'fields',
-    content_type: content_type,
+    content_type: 'member',
     order: 'fields.join_date',
   })
+  const remain_member = []
+  const left_member = []
 
   const map = new Map()
   entries.includes.Asset.forEach((asset) => {
@@ -51,15 +44,16 @@ async function getEntities(content_type) {
   })
 
   entries.items.forEach((item) => {
-    console.log(item)
     if (item.fields.photo !== undefined) {
       item.fields.photo = map.get(item.fields.photo.sys.id)
     }
-    if (item.fields.captain) {
-      members.unshift(item)
+    if (item.fields.left) {
+      left_member.push(item)
+    } else if (item.fields.captain) {
+      remain_member.unshift(item)
     } else {
-      members.push(item)
+      remain_member.push(item)
     }
   })
-  return members
+  return { remain_member: remain_member, left_member: left_member }
 }
