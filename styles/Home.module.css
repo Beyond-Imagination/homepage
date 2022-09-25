@@ -93,3 +93,21 @@
   height: 1em;
   margin-left: 0.5rem;
 }
+
+.member {
+  height: 650px;
+  width: 100%;
+  background-color: #f8f7f7;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  color: black;
+  border-radius: 10px;
+  border: white 3px solid;
+}
+
+.captain {
+  border: #dbad47 5px solid;
+
+}
