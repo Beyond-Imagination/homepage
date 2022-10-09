@@ -3,7 +3,7 @@ import styles from '../../styles/layout.module.css'
 
 const Header = ({ className }) => {
   return (
-    <header className={`${className}`}>
+    <header className={`${className}`} style={{ zIndex: 2 }}>
       <div
         className={`w-72 logo text-2xl py-4 ${styles.logo} flex-grow-0 flex-shrink-0`}
       >
