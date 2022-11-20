@@ -21,11 +21,9 @@ const ProjectDetailContent = (props) => {
 
 function ProjectDetail(props) {
   const { entry } = props
-  const router = useRouter()
   const [photoNum, selectPhotoNum] = useState(0)
 
   const project = entry.items[0].fields
-  console.log(project)
   return (
     <div className={`h-full`}>
       <div className={`flex justify-center`}>

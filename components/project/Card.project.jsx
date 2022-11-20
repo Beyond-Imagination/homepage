@@ -36,7 +36,7 @@ function CardProject({ item }) {
           <Name
             name={name}
             onClick={(event) => {
-              router.push(`/project/${item.sys.id}`)
+              router.push(`/projects/${item.sys.id}`)
             }}
           ></Name>
         )}
