@@ -5,6 +5,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import EmailIcon from '@mui/icons-material/Email'
+import Link from 'next/link'
 export default function Home({ entries }) {
   const [projects, setProjects] = useState(entries.items)
   console.log(projects)
@@ -56,9 +57,9 @@ export default function Home({ entries }) {
         <div className={`flex gap-[72px] justify-center`}>
           {projects.map((v) => (
             <di key={v.fields.name} className={`border border-transparent p-4`}>
-              <a href="/projects">
+              <Link href={'/projects'}>
                 <div className={`w-[400px] h-[400px] flex justify-center mb-8`}>
-                  <img
+                  <Image
                     src={v.fields.photos[0]}
                     alt=""
                     className={`bg-contain h-full`}
@@ -72,7 +73,7 @@ export default function Home({ entries }) {
                     {v.fields.description.content[0].content[0].value}
                   </Typography>
                 </div>
-              </a>
+              </Link>
             </di>
           ))}
         </div>
