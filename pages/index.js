@@ -100,28 +100,32 @@ export default function Home({ entries }) {
             </div>
             <div className={`flex justify-around`}>
               <div className={``}>
-                <a
-                  href="https://github.com/Beyond-Imagination"
-                  className={`flex items-center`}
-                >
-                  <GitHubIcon
-                    style={{ marginRight: 40, width: 60, height: 60 }}
+                <Link>
+                  <a
+                    href="https://github.com/Beyond-Imagination"
+                    className={`flex items-center`}
                   >
-                    github-icon
-                  </GitHubIcon>
-                  <div>github 바로가기</div>
-                </a>
+                    <GitHubIcon
+                      style={{ marginRight: 40, width: 60, height: 60 }}
+                    >
+                      github-icon
+                    </GitHubIcon>
+                    <div>github 바로가기</div>
+                  </a>
+                </Link>
               </div>
               <div>
-                <a
-                  href="mailto://beyond-imagination@gmail.com"
-                  className={`flex items-center`}
-                >
-                  <EmailIcon
-                    style={{ marginRight: 40, width: 60, height: 60 }}
-                  ></EmailIcon>
-                  <div>email로 연락하기</div>
-                </a>
+                <Link>
+                  <a
+                    href="mailto://beyond-imagination@gmail.com"
+                    className={`flex items-center`}
+                  >
+                    <EmailIcon
+                      style={{ marginRight: 40, width: 60, height: 60 }}
+                    ></EmailIcon>
+                    <div>email로 연락하기</div>
+                  </a>
+                </Link>
               </div>
             </div>
           </div>
