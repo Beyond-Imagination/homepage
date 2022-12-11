@@ -56,25 +56,34 @@ export default function Home({ entries }) {
         </div>
         <div className={`flex gap-[72px] justify-center`}>
           {projects.map((v) => (
-            <di key={v.fields.name} className={`border border-transparent p-4`}>
+            <div
+              key={v.fields.name}
+              className={`border border-transparent p-4`}
+            >
               <Link href={'/projects'}>
-                <div className={`w-[400px] h-[400px] flex justify-center mb-8`}>
-                  <Image
-                    src={v.fields.photos[0]}
-                    alt=""
-                    className={`bg-contain h-full`}
-                  />
-                </div>
-                <div className={`w-[400px]`}>
-                  <Typography type={'h4'} className={`mb-4`}>
-                    {v.fields.name}
-                  </Typography>
-                  <Typography type={'body2'}>
-                    {v.fields.description.content[0].content[0].value}
-                  </Typography>
-                </div>
+                <a href={'/projects'}>
+                  <div
+                    className={`w-[400px] h-[400px] flex justify-center mb-8`}
+                  >
+                    <Image
+                      src={v.fields.photos[0]}
+                      alt=""
+                      className={`bg-contain h-full`}
+                      width={400}
+                      height={400}
+                    />
+                  </div>
+                  <div className={`w-[400px]`}>
+                    <Typography type={'h4'} className={`mb-4`}>
+                      {v.fields.name}
+                    </Typography>
+                    <Typography type={'body2'}>
+                      {v.fields.description.content[0].content[0].value}
+                    </Typography>
+                  </div>
+                </a>
               </Link>
-            </di>
+            </div>
           ))}
         </div>
       </PageTemplate>
@@ -101,7 +110,7 @@ export default function Home({ entries }) {
             </div>
             <div className={`flex justify-around`}>
               <div className={``}>
-                <Link>
+                <Link href="https://github.com/Beyond-Imagination">
                   <a
                     href="https://github.com/Beyond-Imagination"
                     className={`flex items-center`}
@@ -116,7 +125,7 @@ export default function Home({ entries }) {
                 </Link>
               </div>
               <div>
-                <Link>
+                <Link href="mailto://beyond-imagination@gmail.com">
                   <a
                     href="mailto://beyond-imagination@gmail.com"
                     className={`flex items-center`}
