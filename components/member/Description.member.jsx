@@ -1,5 +1,6 @@
 function Description({ description }) {
-  return <p>{description}</p>
+  console.log(description)
+  return <p style={{ whiteSpace: 'pre-line' }}> {description}</p>
 }
 
 export default Description
