@@ -125,9 +125,9 @@ export default function Home({ entries }) {
                 </Link>
               </div>
               <div>
-                <Link href="mailto://beyond-imagination@gmail.com">
+                <Link href="mailto://Beyond.Imagination.Korea@gmail.com">
                   <a
-                    href="mailto://beyond-imagination@gmail.com"
+                    href="mailto://Beyond.Imagination.Korea@gmail.com"
                     className={`flex items-center`}
                   >
                     <EmailIcon
