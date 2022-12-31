@@ -7,7 +7,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Beyond Imagination</title>
+        <title>Beyond_Imagination</title>
       </Head>
       <Header
         className={`flex justify-between px-12 fixed top-0 w-full bg-black`}

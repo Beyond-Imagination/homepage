@@ -100,7 +100,7 @@ export default function Home({ entries }) {
           <div className={`flex flex-col`}>
             <div className={`mb-20`}>
               <div className={`font-bold text-5xl text-center mb-4`}>
-                Beyond Imagination
+                Beyond_Imagination
               </div>
               <div className={`text-base text-center`}>
                 상상을 뛰어넘는 생각을 실현하기위한 모임입니다.

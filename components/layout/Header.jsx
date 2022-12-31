@@ -10,7 +10,7 @@ const Header = ({ className }) => {
       <div
         className={`w-72 logo text-2xl py-4 ${styles.logo} flex-grow-0 flex-shrink-0`}
       >
-        <Link href="/">Beyond Imagination</Link>
+        <Link href="/">Beyond_Imagination</Link>
       </div>
       <nav className={`flex-1 flex justify-end items-center`}>
         <Link href="/">

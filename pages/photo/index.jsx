@@ -8,8 +8,9 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 
 import 'yet-another-react-lightbox/plugins/captions.css'
 
-function Photo({ images }) {
+function Photo({ images, entries }) {
   const [index, setIndex] = useState(-1)
+  console.log(entries)
 
   const handleClick = (index, item) => setIndex(index)
 
@@ -43,7 +44,7 @@ export async function getServerSideProps(context) {
   const entries = await contentfulClientApi.getEntries({
     select: 'fields',
     content_type: 'photos',
-    order: 'sys.createdAt',
+    order: '-fields.date',
   })
 
   const map = new Map()
@@ -66,6 +67,7 @@ export async function getServerSideProps(context) {
           caption: v.fields.description,
         }
       }),
+      entries,
     }, // will be passed to the page component as props
   }
 }
