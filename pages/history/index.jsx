@@ -1,9 +1,23 @@
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import styles from '../../styles/history.module.css'
 import HistoryItem from '@/components/history/HistoryItem'
+import { useState,useEffect } from 'react';
 
-function History(props) {
-  const { histories } = props
+function History() {
+  const [histories, setHistories] = useState([]);
+
+  useEffect(() =>{
+    async function fetchData(){
+      const entries = await contentfulClientApi.getEntries({
+        order:'-fields.date',
+        select:'fields',
+        content_type:'history',
+      })
+      setHistories(entries.items)
+    }
+    fetchData();
+  },[]);
+
   return (
     <div className={`h-full`}>
       <div className={`${styles.historyContainer}`}>
@@ -16,22 +30,3 @@ function History(props) {
 }
 
 export default History
-
-export async function getServerSideProps(context) {
-  const { res } = context
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59'
-  )
-  const entries = await contentfulClientApi.getEntries({
-    order: '-fields.date',
-    select: 'fields',
-    content_type: 'history',
-  })
-
-  return {
-    props: {
-      histories: entries.items,
-    }, // will be passed to the page component as props
-  }
-}
