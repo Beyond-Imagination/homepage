@@ -1,8 +1,37 @@
 import ProjectCardList from '@/components/project/CardList.project'
 import { contentfulClientApi } from '@/utils/contentfu-api'
+import { useState, useEffect } from 'react'
 
-function Project(props) {
-  const { projects } = props
+function Project() {
+   const [projects, setProjects] = useState([])
+
+   useEffect(() => {
+    async function fetchData() {
+      const entries = await contentfulClientApi.getEntries({
+        select: 'fields',
+        content_type: 'projects',
+      })
+
+      const map = new Map()
+      entries.includes.Asset.forEach((asset) => {
+        const key = asset.sys.id
+        const value = `https:${asset.fields.file.url}`
+        map.set(key, value)
+      })
+      entries.items.forEach((item) => {
+        let photos = []
+        item.fields.photos.forEach((photo) => {
+          photos.push(map.get(photo.sys.id))
+        })
+        item.fields.photos = photos
+      })
+
+      setProjects(entries)
+    }
+
+    fetchData()
+  }, [])
+  
   return (
     <div className={`h-full`}>
       <div className={`flex justify-center`}>
@@ -13,37 +42,3 @@ function Project(props) {
   )
 }
 export default Project
-
-//Server Side에서 API 요청을 위한 함수
-export async function getServerSideProps(context) {
-  const { req, res } = context
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59'
-  )
-  const entries = await contentfulClientApi.getEntries({
-    select: 'fields',
-    content_type: 'projects',
-    // order: 'fields.join_date',
-  })
-
-  const map = new Map()
-  entries.includes.Asset.forEach((asset) => {
-    const key = asset.sys.id
-    const value = `https:${asset.fields.file.url}`
-    map.set(key, value)
-  })
-  entries.items.forEach((item) => {
-    let photos = []
-    item.fields.photos.forEach((photo) => {
-      photos.push(map.get(photo.sys.id))
-    })
-    item.fields.photos = photos
-  })
-
-  return {
-    props: {
-      projects: entries,
-    }, // will be passed to the page component as props
-  }
-}
