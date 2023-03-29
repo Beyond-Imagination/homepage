@@ -1,30 +1,29 @@
+import { useEffect, useState } from 'react'
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import CardList from '@/components/member/CardList.member'
 
-function Member(props) {
-  const { members } = props
+function Member() {
+  const [members, setMembers] = useState(null)
+
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getEntities()
+      setMembers(data)
+    }
+    fetchData()
+  }, [])
+
+  //contentful api에서 데이터를 가져오지 못했을 때
+  if (!members) {
+    return <div>Loading...</div>
+  }
+
   return (
     <div className={`h-full`}>
       <CardList title="팀원 소개" members={members.remain_member}></CardList>
       <CardList title="탈퇴 멤버" members={members.left_member}></CardList>
     </div>
   )
-}
-
-export default Member
-
-export async function getServerSideProps(context) {
-  const { res } = context
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59'
-  )
-
-  return {
-    props: {
-      members: await getEntities(),
-    }, // will be passed to the page component as props
-  }
 }
 
 async function getEntities() {
@@ -57,3 +56,5 @@ async function getEntities() {
   })
   return { remain_member: remain_member, left_member: left_member }
 }
+
+export default Member
