@@ -5,9 +5,5 @@
 */
 
 job("Hello World!") {
-    container(displayName = "Say Hello", image = "hello-world") {
-		shellSCript {
-			content = "echo Hello"
-        }
-    }
+    container(displayName = "Say Hello", image = "hello-world")
 }
