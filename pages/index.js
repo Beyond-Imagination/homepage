@@ -1,14 +1,40 @@
 import Typography from '@/components/common/Typography'
 import PageTemplate from '@/components/home/PageTemplate'
 import { contentfulClientApi } from '@/utils/contentfu-api'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import EmailIcon from '@mui/icons-material/Email'
 import Link from 'next/link'
-export default function Home({ entries }) {
-  const [projects, setProjects] = useState(entries.items)
-  console.log(projects)
+
+export default function Home() {
+  const [projects, setProjects] = useState([])
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const entries = await contentfulClientApi.getEntries({
+        select: 'fields',
+        content_type: 'projects',
+        limit: 3,
+      })
+      const map = new Map()
+      entries.includes.Asset.forEach((asset) => {
+        const key = asset.sys.id
+        const value = `https:${asset.fields.file.url}`
+        map.set(key, value)
+      })
+      entries.items.forEach((item) => {
+        let photos = []
+        item.fields.photos.forEach((photo) => {
+          photos.push(map.get(photo.sys.id))
+        })
+        item.fields.photos = photos
+      })
+      setProjects(entries.items)
+    }
+    fetchProjects()
+  }, [])
+
   return (
     <>
       <PageTemplate bg={'/images/introduce1.png'}>
@@ -51,6 +77,7 @@ export default function Home({ entries }) {
         className="slide flex flex-col justify-center"
         bg={'/images/introduce3.png'}
       >
+
         <div className={`flex justify-center mb-8`}>
           <span className={`font-bold text-5xl`}>프로젝트를 소개합니다.</span>
         </div>
@@ -145,36 +172,3 @@ export default function Home({ entries }) {
   )
 }
 
-//Server Side에서 API 요청을 위한 함수
-export async function getServerSideProps(context) {
-  const { req, res } = context
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59'
-  )
-  const entries = await contentfulClientApi.getEntries({
-    select: 'fields',
-    content_type: 'projects',
-    limit: 3,
-  })
-
-  const map = new Map()
-  entries.includes.Asset.forEach((asset) => {
-    const key = asset.sys.id
-    const value = `https:${asset.fields.file.url}`
-    map.set(key, value)
-  })
-  entries.items.forEach((item) => {
-    let photos = []
-    item.fields.photos.forEach((photo) => {
-      photos.push(map.get(photo.sys.id))
-    })
-    item.fields.photos = photos
-  })
-
-  return {
-    props: {
-      entries: entries,
-    }, // will be passed to the page component as props
-  }
-}
