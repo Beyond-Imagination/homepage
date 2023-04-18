@@ -1,7 +1,8 @@
 import Card from '@/components/project/Card.project'
 
 function CardListProject({ projects }) {
-  const items = projects.items
+  const items = projects.items || [] // items가 undefined인 경우, 빈 배열([])로 대체
+
   return (
     <div
       className={`grid desktop:grid-cols-4 tablet:grid-cols-2 grid-cols-1 gap-4`}
