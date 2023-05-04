@@ -2,7 +2,6 @@ import Typography from '@/components/common/Typography'
 import PageTemplate from '@/components/home/PageTemplate'
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import EmailIcon from '@mui/icons-material/Email'
 import Link from 'next/link'
@@ -77,7 +76,6 @@ export default function Home() {
         className="slide flex flex-col justify-center"
         bg={'/images/introduce3.png'}
       >
-
         <div className={`flex justify-center mb-8`}>
           <span className={`font-bold text-5xl`}>프로젝트를 소개합니다.</span>
         </div>
@@ -92,7 +90,7 @@ export default function Home() {
                   <div
                     className={`w-[400px] h-[400px] flex justify-center mb-8`}
                   >
-                    <Image
+                    <img
                       src={v.fields.photos[0]}
                       alt=""
                       className={`bg-contain h-full`}
@@ -117,12 +115,7 @@ export default function Home() {
       <PageTemplate>
         <div className={`flex`}>
           <div className={`mr-[140px]`}>
-            <Image
-              src={'/images/logo.png'}
-              alt="로고"
-              width={300}
-              height={300}
-            ></Image>
+            <img src={'/images/logo.png'} alt="로고" width={300} height={300} />
           </div>
           <div className={`flex flex-col`}>
             <div className={`mb-20`}>
@@ -171,4 +164,3 @@ export default function Home() {
     </>
   )
 }
-

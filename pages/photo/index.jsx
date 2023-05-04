@@ -20,17 +20,17 @@ function Photo() {
         select: 'fields',
         content_type: 'photos',
         order: '-fields.date',
-      });
+      })
 
-      const map = new Map();
+      const map = new Map()
       entries.includes.Asset.forEach((asset) => {
-        const key = asset.sys.id;
-        const value = `https:${asset.fields.file.url}`;
-        map.set(key, value);
-      });
+        const key = asset.sys.id
+        const value = `https:${asset.fields.file.url}`
+        map.set(key, value)
+      })
       entries.items.forEach((item) => {
-        item.fields.photo = map.get(item.fields.photo.sys.id);
-      });
+        item.fields.photo = map.get(item.fields.photo.sys.id)
+      })
 
       const images = entries.items.map((v) => {
         return {
@@ -38,14 +38,14 @@ function Photo() {
           width: 300,
           height: 300,
           caption: v.fields.description,
-        };
-      });
+        }
+      })
 
-      setImages(images);
+      setImages(images)
     }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   return (
     <div>

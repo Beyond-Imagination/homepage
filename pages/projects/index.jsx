@@ -3,9 +3,9 @@ import { contentfulClientApi } from '@/utils/contentfu-api'
 import { useState, useEffect } from 'react'
 
 function Project() {
-   const [projects, setProjects] = useState([])
+  const [projects, setProjects] = useState([])
 
-   useEffect(() => {
+  useEffect(() => {
     async function fetchData() {
       const entries = await contentfulClientApi.getEntries({
         select: 'fields',
@@ -31,7 +31,7 @@ function Project() {
 
     fetchData()
   }, [])
-  
+
   return (
     <div className={`h-full`}>
       <div className={`flex justify-center`}>
