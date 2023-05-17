@@ -4,7 +4,7 @@
 * For more info, see https://www.jetbrains.com/help/space/automation.html
 */
 
-job("Build & Deploy") {
+job("Build and deploy") {
 	parameters {
         secret("space-id", value = "{{ project:NEXT_PUBLIC_SPACE_ID }}")
         secret("deliver-access-token", value = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN }}")
