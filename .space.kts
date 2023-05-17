@@ -10,7 +10,7 @@ job("Build and deploy") {
         secret("deliver-access-token", value = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN }}")
         secret("preview-access-token", value = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN }}")
     }
-    container(displayName = "builder", image = "beyond-imagination.registry.jetbrains.space/p/b-i-homepage/containers/builder:latest") {
+    container(displayName = "builder", image = "beyond-imagination.registry.jetbrains.space/p/b-i-homepage/containers/builder") {
 		env["SPACE_ID"] = "{{ space-id }}"
       	env["DELIVER_ACCESS_TOKEN"] = "{{ deliver-access-token }}"
       	env["PREVIEW_ACCESS_TOKEN"] = "{{ preview-access-token }}"
