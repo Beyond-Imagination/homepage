@@ -1,28 +1,45 @@
-/**
-* JetBrains Space Automation
-* This Kotlin-script file lets you automate build activities
-* For more info, see https://www.jetbrains.com/help/space/automation.html
-*/
-
 job("Build and deploy") {
-	parameters {
-        secret("space-id", value = "{{ project:NEXT_PUBLIC_SPACE_ID }}")
-        secret("deliver-access-token", value = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN }}")
-        secret("preview-access-token", value = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN }}")
+    startOn {
+        gitPush {
+            anyBranchMatching {
+                +"main"
+                +"develop"
+                +"test"
+            }
+        }
     }
-    container(displayName = "builder", image = "beyond-imagination.registry.jetbrains.space/p/b-i-homepage/containers/builder") {
-		env["SPACE_ID"] = "{{ space-id }}"
-      	env["DELIVER_ACCESS_TOKEN"] = "{{ deliver-access-token }}"
-      	env["PREVIEW_ACCESS_TOKEN"] = "{{ preview-access-token }}"
 
-      	shellScript {
-			content = """
-				echo "NEXT_PUBLIC_SPACE_ID=${'$'}SPACE_ID" >> .env
+    container(displayName = "build", image = "node:alpine") {
+        env["SPACE_ID"] = "{{ project:NEXT_PUBLIC_SPACE_ID }}"
+        env["DELIVERY_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN }}"
+        env["PREVIEW_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN }}"
+
+        shellScript {
+            content = """
+                echo "NEXT_PUBLIC_SPACE_ID=${'$'}SPACE_ID" >> .env
                 echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env
                 echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env
-				yarn
-    			yarn build
-      		"""
+
+                yarn
+                yarn build
+
+                cp -r out ${'$'}JB_SPACE_FILE_SHARE_PATH/out
+            """
+        }
+    }
+
+    container(displayName = "deploy", image = "amazon/aws-cli") {
+        shellScript {
+            content = """
+                ls -al ${'$'}JB_SPACE_FILE_SHARE_PATH/out
+                aws --version
+
+                export AWS_ACCESS_KEY_ID="{{ project.AWS_ACCESS_KEY_ID }}"
+                export AWS_SECRET_ACCESS_KEY="{{ project.AWS_SECRET_ACCESS_KEY }}"
+                export AWS_DEFAULT_REGION=ap-northeast-2
+
+                aws s3 sync ${'$'}JB_SPACE_FILE_SHARE_PATH/out s3://beyond-imagination-dev/out
+            """
         }
     }
 }
