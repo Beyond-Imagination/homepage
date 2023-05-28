@@ -29,13 +29,16 @@ job("Build and deploy") {
     }
 
     container(displayName = "deploy", image = "amazon/aws-cli") {
+        env["AWS_ACCESS_KEY_ID"] = "{{ project:AWS_ACCESS_KEY_ID }}"
+        env["AWS_SECRET_ACCESS_KEY"] = "{{ project:AWS_SECRET_ACCESS_KEY }}"
+
         shellScript {
             content = """
                 ls -al ${'$'}JB_SPACE_FILE_SHARE_PATH/out
                 aws --version
 
-                export AWS_ACCESS_KEY_ID="{{ project:AWS_ACCESS_KEY_ID }}"
-                export AWS_SECRET_ACCESS_KEY="{{ project:AWS_SECRET_ACCESS_KEY }}"
+                export AWS_ACCESS_KEY_ID=${'$'}AWS_ACCESS_KEY_ID
+                export AWS_SECRET_ACCESS_KEY=${'$'}AWS_SECRET_ACCESS_KEY
                 export AWS_DEFAULT_REGION=ap-northeast-2
 
                 aws s3 sync ${'$'}JB_SPACE_FILE_SHARE_PATH/out s3://beyond-imagination-dev/out
