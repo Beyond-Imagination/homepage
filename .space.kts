@@ -4,7 +4,6 @@ job("Build and deploy") {
             anyBranchMatching {
                 +"main"
                 +"develop"
-                +"test"
             }
         }
     }
@@ -41,7 +40,13 @@ job("Build and deploy") {
                 export AWS_SECRET_ACCESS_KEY=${'$'}AWS_SECRET_ACCESS_KEY
                 export AWS_DEFAULT_REGION=ap-northeast-2
 
-                aws s3 sync ${'$'}JB_SPACE_FILE_SHARE_PATH/out s3://beyond-imagination-dev/out
+                if [ ${'$'}JB_SPACE_GIT_BRANCH == "develop" ]; then
+                    aws s3 sync ${'$'}JB_SPACE_FILE_SHARE_PATH/out s3://beyond-imagination-dev/out
+                elif [ ${'$'}JB_SPACE_GIT_BRANCH = "main" ]; then
+                    aws s3 sync ${'$'}JB_SPACE_FILE_SHARE_PATH/out s3://beyond-imagination-main/out
+                else
+                    echo "Deployment is not supported on this branch."
+                fi
             """
         }
     }
