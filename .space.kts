@@ -42,9 +42,9 @@ job("Build and deploy") {
 
                 echo ${'$'}JB_SPACE_GIT_BRANCH
 
-                if [ ${'$'}JB_SPACE_GIT_BRANCH == "develop" ]; then
+                if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/develop" ]; then
                     aws s3 sync ${'$'}JB_SPACE_FILE_SHARE_PATH/out s3://beyond-imagination-dev/out
-                elif [ ${'$'}JB_SPACE_GIT_BRANCH == "main" ]; then
+                elif [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
                     aws s3 sync ${'$'}JB_SPACE_FILE_SHARE_PATH/out s3://beyond-imagination-main/out
                 else
                     echo "Deployment is not supported on this branch."
