@@ -1,20 +1,62 @@
 import Typography from '@/components/common/Typography'
-import PageTemplate from '@/components/home/PageTemplate'
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import { useState, useEffect } from 'react'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import EmailIcon from '@mui/icons-material/Email'
 import Link from 'next/link'
+import PageTemplate1 from '@/components/home/PageTemplate1'
+import PageTemplate2 from '@/components/home/PageTemplate2'
+import SlideTypography from '@/components/common/SlideTypography'
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+function CustomNextArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: "block", width: "100px", height: "100px", position: 'absolute', right: -90, top: '50%', transform: 'translateY(-50%)' }}
+     onClick={onClick}
+    >
+      <img src="/images/slideR.png" />
+    </div>
+  );
+}
+
+function CustomPrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: "block",  width: "100px", height: "100px", position: 'absolute', left: -90, top: '50%', transform: 'translateY(-50%)' }}
+      onClick={onClick}
+    >
+      <img src="/images/slideL.png" />
+    </div>
+  );
+}
+
 
 export default function Home() {
   const [projects, setProjects] = useState([])
+
+  const settings = {
+    dots: false,
+    infinite: false,
+    centerMode: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow />
+  };
 
   useEffect(() => {
     const fetchProjects = async () => {
       const entries = await contentfulClientApi.getEntries({
         select: 'fields',
         content_type: 'projects',
-        limit: 3,
       })
       const map = new Map()
       entries.includes.Asset.forEach((asset) => {
@@ -30,38 +72,43 @@ export default function Home() {
         item.fields.photos = photos
       })
       setProjects(entries.items)
+      console.log("entries.items", entries.items);
     }
     fetchProjects()
   }, [])
 
   return (
     <>
-      <PageTemplate bg={'/images/introduce1.png'}>
-        <div className="text-container">
+      <PageTemplate1 bg={'/images/newintroduce1.png'}>
+        <div className="text-container flex-start ml-48 mb-18">
           <div>
             <Typography type={`h3`}>세상을 바꾸는 또라이가 되자</Typography>
           </div>
-          <div className={`flex justify-center`}>
-            <Typography type={'body1'} className={`text-center`}>
+          <div className={`flex justify-start mt-14`}>
+            <Typography type={'body2'} className={`text-start`}>
               Computers are incredibly fast, accurate, and stupid.
               <br />
               Human beings are incredibly slow, inaccurate, and brilliant.
               <br />
               Together they are powerful beyond imagination.
-              <br />- Albert Einstein -
+            </Typography>
+          </div>
+          <div className='mt-8'>
+            <Typography type={'body2'} className={`text-start`}>
+              <div />- Albert Einstein -
             </Typography>
           </div>
         </div>
-      </PageTemplate>
-      <PageTemplate bg={'/images/introduce2.png'}>
-        <div className="text-container">
+      </PageTemplate1>
+      <PageTemplate2 bg={'/images/newintroduce2.png'}>
+        <div className="text-container mb-8">
           <div>
             <Typography type={`h3`}>
-              프로그래밍으로 세상을 바꿔갑니다.
+              프로그래밍으로 세상을 바꿔갑니다
             </Typography>
           </div>
-          <div className={`flex justify-center`}>
-            <Typography type={'body1'} className={`text-center`}>
+          <div className={`flex justify-end mt-14 mr-48`}>
+            <Typography type={'body1'} className={`text-end`}>
               다양한 분야의 개발자들이 모여 세상을 바꿀 서비스를 만들어갑니다.
               <br />
               어떤일을 하는지 경력이 얼마인지 중요하지 않습니다.
@@ -71,96 +118,78 @@ export default function Home() {
             </Typography>
           </div>
         </div>
-      </PageTemplate>
-      <PageTemplate
-        className="slide flex flex-col justify-center"
-        bg={'/images/introduce3.png'}
-      >
-        <div className={`flex justify-center mb-8`}>
-          <span className={`font-bold text-5xl`}>프로젝트를 소개합니다.</span>
+      </PageTemplate2>
+      <div style={{ background: '#141416' }}>
+        <div className='pt-10 px-44'>
+          <SlideTypography type={'h1'}>Our Projects</SlideTypography>
         </div>
-        <div className={`flex gap-[72px] justify-center`}>
-          {projects.map((v) => (
-            <div
-              key={v.fields.name}
-              className={`border border-transparent p-4`}
-            >
-              <Link href={'/projects'}>
-                <a href={'/projects'}>
-                  <div
-                    className={`w-[400px] h-[400px] flex justify-center mb-8`}
-                  >
-                    <img
-                      src={v.fields.photos[0]}
-                      alt=""
-                      className={`bg-contain h-full`}
-                      width={400}
-                      height={400}
-                    />
+        <div className='pt-6 px-44 '>
+          <div className='mb-4 ' style={{ height: '1px', background: '#B4B4B4', border: 'none', position: 're' }}></div>
+          <Slider {...settings}>
+            {projects.map((v) => (
+              <div key={v.fields.name} className={`border border-transparent flex`}>
+                <div className='flex justify-start'>
+                  <SlideTypography type={'h4'} className="pt-4 pl-24 pb-24">{v.fields.name}</SlideTypography>
+                </div>
+                <div className='mx-auto flex w-10/12 overflow-visible'>
+                  <div className='w-1/2 flex flex-col mr-16'>
+                    <div className='flex'>
+                      <div className='w-2/5 mr-4'>
+                        <SlideTypography type='body2'>Description</SlideTypography>
+                      </div>
+                      <div className='w-3/4'>
+                        <SlideTypography type='body1'>{v.fields.description.content[0].content[0].value}</SlideTypography>
+                      </div>
+                    </div>
+                    <div className='w-full flex mt-6'>
+                      <div className='my-4 w-full' style={{ height: '1px', background: '#B4B4B4', border: 'none' }}></div>
+                    </div>
+                    <div className='flex mt-6'>
+                      <div className='w-2/5 mr-4'>
+                        <SlideTypography type='body2'>Tech Stacks</SlideTypography>
+                      </div>
+                      <div className='w-3/4'>
+                        <SlideTypography type='body1'>{v.fields.tech_stacks.join(", ")}</SlideTypography>
+                      </div>
+                    </div>
+                    <div className='flex mt-6'>
+                      <div className='w-2/5 mr-4'>
+                        <SlideTypography type='body2'>Duration</SlideTypography>
+                      </div>
+                      <div className='w-3/4'>
+                        <SlideTypography type='body1'>{v.fields.start_at} ~ {v.fields.end_at}</SlideTypography>
+                      </div>
+                    </div>
+                    <div className='w-full flex mt-6'>
+                      <div className='my-4 w-full' style={{ height: '1px', background: '#B4B4B4', border: 'none' }}></div>
+                    </div>
+                    <div className='flex mt-6'>
+                      <div className='w-2/5 mr-4'>
+                        <SlideTypography type='body2'>Awards</SlideTypography>
+                      </div>
+                      <div className='w-3/4'>
+                        <SlideTypography type='body1'>{v.fields.prizes.value}</SlideTypography>
+                      </div>
+                    </div>
                   </div>
-                  <div className={`w-[400px]`}>
-                    <Typography type={'h4'} className={`mb-4`}>
-                      {v.fields.name}
-                    </Typography>
-                    <Typography type={'body2'}>
-                      {v.fields.description.content[0].content[0].value}
-                    </Typography>
+                  <div className='w-1/2 justify-center'>
+                    <div className={`w-[500px] h-[500px] flex justify-center`}>
+                      <img
+                        src={v.fields.photos[0]}
+                        alt=""
+                        className={`bg-contain h-full`}
+                        width={564}
+                        height={504}
+                      />
+                    </div>
                   </div>
-                </a>
-              </Link>
-            </div>
-          ))}
+                </div>
+              </div>
+            ))}
+          </Slider>
         </div>
-      </PageTemplate>
-      <PageTemplate>
-        <div className={`flex`}>
-          <div className={`mr-[140px]`}>
-            <img src={'/images/logo.png'} alt="로고" width={300} height={300} />
-          </div>
-          <div className={`flex flex-col`}>
-            <div className={`mb-20`}>
-              <div className={`font-bold text-5xl text-center mb-4`}>
-                Beyond_Imagination
-              </div>
-              <div className={`text-base text-center`}>
-                상상을 뛰어넘는 생각을 실현하기위한 모임입니다.
-                <br />
-                저희 모임에 합류하실 멋진 크루분들을 항상 기다립니다.
-              </div>
-            </div>
-            <div className={`flex justify-around`}>
-              <div className={``}>
-                <Link href="https://github.com/Beyond-Imagination">
-                  <a
-                    href="https://github.com/Beyond-Imagination"
-                    className={`flex items-center`}
-                  >
-                    <GitHubIcon
-                      style={{ marginRight: 40, width: 60, height: 60 }}
-                    >
-                      github-icon
-                    </GitHubIcon>
-                    <div>github 바로가기</div>
-                  </a>
-                </Link>
-              </div>
-              <div>
-                <Link href="mailto://Beyond.Imagination.Korea@gmail.com">
-                  <a
-                    href="mailto://Beyond.Imagination.Korea@gmail.com"
-                    className={`flex items-center`}
-                  >
-                    <EmailIcon
-                      style={{ marginRight: 40, width: 60, height: 60 }}
-                    ></EmailIcon>
-                    <div>email로 연락하기</div>
-                  </a>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </PageTemplate>
+        <div className="pb-24"></div>
+      </div>
     </>
   )
 }
