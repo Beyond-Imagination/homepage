@@ -7,36 +7,50 @@ import Link from 'next/link'
 import PageTemplate1 from '@/components/home/PageTemplate1'
 import PageTemplate2 from '@/components/home/PageTemplate2'
 import SlideTypography from '@/components/common/SlideTypography'
-import Slider from 'react-slick';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import Slider from 'react-slick'
 
 function CustomNextArrow(props) {
-  const { className, style, onClick } = props;
+  const { className, style, onClick } = props
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", width: "100px", height: "100px", position: 'absolute', right: -90, top: '50%', transform: 'translateY(-50%)' }}
-     onClick={onClick}
+      style={{
+        ...style,
+        display: 'block',
+        width: '100px',
+        height: '100px',
+        position: 'absolute',
+        right: -90,
+        top: '50%',
+        transform: 'translateY(-50%)',
+      }}
+      onClick={onClick}
     >
       <img src="/images/slideR.png" />
     </div>
-  );
+  )
 }
-
 function CustomPrevArrow(props) {
-  const { className, style, onClick } = props;
+  const { className, style, onClick } = props
   return (
     <div
       className={className}
-      style={{ ...style, display: "block",  width: "100px", height: "100px", position: 'absolute', left: -90, top: '50%', transform: 'translateY(-50%)' }}
+      style={{
+        ...style,
+        display: 'block',
+        width: '100px',
+        height: '100px',
+        position: 'absolute',
+        left: -90,
+        top: '50%',
+        transform: 'translateY(-50%)',
+      }}
       onClick={onClick}
     >
       <img src="/images/slideL.png" />
     </div>
-  );
+  )
 }
-
 
 export default function Home() {
   const [projects, setProjects] = useState([])
@@ -49,8 +63,8 @@ export default function Home() {
     slidesToShow: 1,
     slidesToScroll: 1,
     nextArrow: <CustomNextArrow />,
-    prevArrow: <CustomPrevArrow />
-  };
+    prevArrow: <CustomPrevArrow />,
+  }
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -72,7 +86,7 @@ export default function Home() {
         item.fields.photos = photos
       })
       setProjects(entries.items)
-      console.log("entries.items", entries.items);
+      console.log('entries.items', entries.items)
     }
     fetchProjects()
   }, [])
@@ -93,7 +107,7 @@ export default function Home() {
               Together they are powerful beyond imagination.
             </Typography>
           </div>
-          <div className='mt-8'>
+          <div className="mt-8">
             <Typography type={'body2'} className={`text-start`}>
               <div />- Albert Einstein -
             </Typography>
@@ -120,59 +134,98 @@ export default function Home() {
         </div>
       </PageTemplate2>
       <div style={{ background: '#141416' }}>
-        <div className='pt-10 px-44'>
+        <div className="pt-10 px-44">
           <SlideTypography type={'h1'}>Our Projects</SlideTypography>
         </div>
-        <div className='pt-6 px-44 '>
-          <div className='mb-4 ' style={{ height: '1px', background: '#B4B4B4', border: 'none', position: 're' }}></div>
+        <div className="pt-6 px-44 ">
+          <div
+            className="mb-4 "
+            style={{
+              height: '1px',
+              background: '#B4B4B4',
+              border: 'none',
+              position: 're',
+            }}
+          ></div>
           <Slider {...settings}>
             {projects.map((v) => (
-              <div key={v.fields.name} className={`border border-transparent flex`}>
-                <div className='flex justify-start'>
-                  <SlideTypography type={'h4'} className="pt-4 pl-24 pb-24">{v.fields.name}</SlideTypography>
+              <div
+                key={v.fields.name}
+                className={`border border-transparent flex`}
+              >
+                <div className="flex justify-start">
+                  <SlideTypography type={'h4'} className="pt-4 pl-24 pb-24">
+                    {v.fields.name}
+                  </SlideTypography>
                 </div>
-                <div className='mx-auto flex w-10/12 overflow-visible'>
-                  <div className='w-1/2 flex flex-col mr-16'>
-                    <div className='flex'>
-                      <div className='w-2/5 mr-4'>
-                        <SlideTypography type='body2'>Description</SlideTypography>
+                <div className="mx-auto flex w-10/12 overflow-visible">
+                  <div className="w-1/2 flex flex-col mr-16">
+                    <div className="flex">
+                      <div className="w-2/5 mr-4">
+                        <SlideTypography type="body2">
+                          Description
+                        </SlideTypography>
                       </div>
-                      <div className='w-3/4'>
-                        <SlideTypography type='body1'>{v.fields.description.content[0].content[0].value}</SlideTypography>
-                      </div>
-                    </div>
-                    <div className='w-full flex mt-6'>
-                      <div className='my-4 w-full' style={{ height: '1px', background: '#B4B4B4', border: 'none' }}></div>
-                    </div>
-                    <div className='flex mt-6'>
-                      <div className='w-2/5 mr-4'>
-                        <SlideTypography type='body2'>Tech Stacks</SlideTypography>
-                      </div>
-                      <div className='w-3/4'>
-                        <SlideTypography type='body1'>{v.fields.tech_stacks.join(", ")}</SlideTypography>
+                      <div className="w-3/4">
+                        <SlideTypography type="body1">
+                          {v.fields.description.content[0].content[0].value}
+                        </SlideTypography>
                       </div>
                     </div>
-                    <div className='flex mt-6'>
-                      <div className='w-2/5 mr-4'>
-                        <SlideTypography type='body2'>Duration</SlideTypography>
+                    <div className="w-full flex mt-6">
+                      <div
+                        className="my-4 w-full"
+                        style={{
+                          height: '1px',
+                          background: '#B4B4B4',
+                          border: 'none',
+                        }}
+                      ></div>
+                    </div>
+                    <div className="flex mt-6">
+                      <div className="w-2/5 mr-4">
+                        <SlideTypography type="body2">
+                          Tech Stacks
+                        </SlideTypography>
                       </div>
-                      <div className='w-3/4'>
-                        <SlideTypography type='body1'>{v.fields.start_at} ~ {v.fields.end_at}</SlideTypography>
+                      <div className="w-3/4">
+                        <SlideTypography type="body1">
+                          {v.fields.tech_stacks.join(', ')}
+                        </SlideTypography>
                       </div>
                     </div>
-                    <div className='w-full flex mt-6'>
-                      <div className='my-4 w-full' style={{ height: '1px', background: '#B4B4B4', border: 'none' }}></div>
-                    </div>
-                    <div className='flex mt-6'>
-                      <div className='w-2/5 mr-4'>
-                        <SlideTypography type='body2'>Awards</SlideTypography>
+                    <div className="flex mt-6">
+                      <div className="w-2/5 mr-4">
+                        <SlideTypography type="body2">Duration</SlideTypography>
                       </div>
-                      <div className='w-3/4'>
-                        <SlideTypography type='body1'>{v.fields.prizes.value}</SlideTypography>
+                      <div className="w-3/4">
+                        <SlideTypography type="body1">
+                          {v.fields.start_at} ~ {v.fields.end_at}
+                        </SlideTypography>
+                      </div>
+                    </div>
+                    <div className="w-full flex mt-6">
+                      <div
+                        className="my-4 w-full"
+                        style={{
+                          height: '1px',
+                          background: '#B4B4B4',
+                          border: 'none',
+                        }}
+                      ></div>
+                    </div>
+                    <div className="flex mt-6">
+                      <div className="w-2/5 mr-4">
+                        <SlideTypography type="body2">Awards</SlideTypography>
+                      </div>
+                      <div className="w-3/4">
+                        <SlideTypography type="body1">
+                          {v.fields.prizes.value}
+                        </SlideTypography>
                       </div>
                     </div>
                   </div>
-                  <div className='w-1/2 justify-center'>
+                  <div className="w-1/2 justify-center">
                     <div className={`w-[500px] h-[500px] flex justify-center`}>
                       <img
                         src={v.fields.photos[0]}
