@@ -1,5 +1,5 @@
 import { contentfulClientApi } from '@/utils/contentfu-api'
-import { Gallery } from 'react-grid-gallery'
+import PhotoAlbum from 'react-photo-album'
 import { useState, useEffect } from 'react'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
@@ -10,12 +10,11 @@ import 'yet-another-react-lightbox/plugins/captions.css'
 
 function Photo() {
   const [index, setIndex] = useState(-1)
-  const handleClick = (index, item) => setIndex(index)
-
   const [images, setImages] = useState([])
 
   useEffect(() => {
     async function fetchData() {
+      //get Contetntful Data / Content Type: photos
       const entries = await contentfulClientApi.getEntries({
         select: 'fields',
         content_type: 'photos',
@@ -28,15 +27,28 @@ function Photo() {
         const value = `https:${asset.fields.file.url}`
         map.set(key, value)
       })
+
       entries.items.forEach((item) => {
         item.fields.photo = map.get(item.fields.photo.sys.id)
+      })
+
+      //get Contentful Data / Media
+      const assets = await contentfulClientApi.getAssets({
+        select: 'fields',
+      })
+
+      const photos = new Map()
+      assets.items.forEach((asset) => {
+        const key = `https:${asset.fields.file.url}`
+        const value = asset.fields.file.details.image
+        photos.set(key, value)
       })
 
       const images = entries.items.map((v) => {
         return {
           src: v.fields.photo,
-          width: 300,
-          height: 300,
+          width: photos.get(v.fields.photo).width,
+          height: photos.get(v.fields.photo).height,
           caption: v.fields.description,
         }
       })
@@ -49,11 +61,13 @@ function Photo() {
 
   return (
     <div>
-      <Gallery
-        images={images}
-        onClick={handleClick}
-        enableImageSelection={false}
+      <PhotoAlbum
+        layout="rows"
+        spacing={5}
+        photos={images}
+        onClick={({ index }) => setIndex(index)}
       />
+
       <Lightbox
         slides={images.map((v) => {
           return { src: v.src, title: v.caption }
@@ -67,4 +81,3 @@ function Photo() {
   )
 }
 export default Photo
-//Server Side에서 API 요청을 위한 함수
