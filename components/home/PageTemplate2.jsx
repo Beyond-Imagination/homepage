@@ -1,6 +1,9 @@
 function PageTemplate2({ children, style, bg }) {
   return (
-    <div className={`flex items-center justify-end relative`} style={{ ...style }}>
+    <div
+      className={`flex items-center justify-end relative`}
+      style={{ ...style }}
+    >
       {bg && (
         <div
           className="relative"
@@ -16,7 +19,7 @@ function PageTemplate2({ children, style, bg }) {
 
       <div className={`absolute z-10`}>{children}</div>
     </div>
-  );
+  )
 }
 
-export default PageTemplate2;
+export default PageTemplate2

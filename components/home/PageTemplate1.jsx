@@ -1,4 +1,3 @@
-
 function PageTemplate1({ children, style, bg }) {
   return (
     <div
