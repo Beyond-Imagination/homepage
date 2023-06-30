@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import '../styles/globals.css'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
@@ -6,6 +7,13 @@ import 'slick-carousel/slick/slick-theme.css'
 import Head from 'next/head'
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter()
+
+  let mainStyle = `my-16 px-12 flex-1`
+  if (router.pathname === '/') {
+    mainStyle = `flex-1` // index.js에는 mainstyle 적용을 하지 않습니다.
+  }
+
   return (
     <>
       <Head>
@@ -14,7 +22,7 @@ function MyApp({ Component, pageProps }) {
       <Header
         className={`flex justify-between px-12 fixed top-0 w-full bg-black`}
       ></Header>
-      <main className={`mt-16 px-12 flex-1`}>
+      <main className={mainStyle}>
         <Component {...pageProps} />
       </main>
       <Footer className={`px-12`}></Footer>
