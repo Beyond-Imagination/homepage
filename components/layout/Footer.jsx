@@ -95,6 +95,13 @@ const Footer = ({ className }) => {
                 </div>
               </a>
             </Link>
+            <div className="flex justify-end mt-4">
+              <Link href="https://open.kakao.com/o/gMapmsuf">
+                <a>
+                  <img src="/images/kakao.png" alt="Kakao" />
+                </a>
+              </Link>
+            </div>
           </div>
         </div>
         <div className="flex items-center mt-8">
