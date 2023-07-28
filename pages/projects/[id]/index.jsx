@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import ProjectCardList from '@/components/project/CardList.project'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import photo from '../../photo'
 import ProjectDetailPhoto from '@/components/project/detail/ProjectDetailPhoto'
 import Link from 'next/link'
@@ -19,9 +19,43 @@ const ProjectDetailContent = (props) => {
   )
 }
 
-function ProjectDetail(props) {
-  const { entry } = props
+function ProjectDetail() {
+  const router = useRouter()
   const [photoNum, selectPhotoNum] = useState(0)
+  const [entry, setEntry] = useState([])
+
+  const { id } = router.query
+  useEffect(() => {
+    async function fetchData() {
+      const entries = await contentfulClientApi.getEntries({
+        select: 'fields',
+        content_type: 'projects',
+        'sys.id': id,
+      })
+
+      const map = new Map()
+      entries.includes.Asset.forEach((asset) => {
+        const key = asset.sys.id
+        const value = `https:${asset.fields.file.url}`
+        map.set(key, value)
+      })
+      entries.items.forEach((item) => {
+        let photos = []
+        item.fields.photos.forEach((photo) => {
+          photos.push(map.get(photo.sys.id))
+        })
+        item.fields.photos = photos
+      })
+
+      setEntry(entries)
+    }
+
+    fetchData()
+  }, [])
+
+  if (entry.length === 0) {
+    return <div>wait</div>
+  }
 
   const project = entry.items[0].fields
   return (
@@ -124,39 +158,3 @@ function ProjectDetail(props) {
 }
 
 export default ProjectDetail
-//Server Side에서 API 요청을 위한 함수
-export async function getServerSideProps(context) {
-  const { req, res } = context
-  const { id } = context.query
-
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59'
-  )
-  const entries = await contentfulClientApi.getEntries({
-    select: 'fields',
-    content_type: 'projects',
-    // order: 'fields.join_date',
-    'sys.id': id,
-  })
-
-  const map = new Map()
-  entries.includes.Asset.forEach((asset) => {
-    const key = asset.sys.id
-    const value = `https:${asset.fields.file.url}`
-    map.set(key, value)
-  })
-  entries.items.forEach((item) => {
-    let photos = []
-    item.fields.photos.forEach((photo) => {
-      photos.push(map.get(photo.sys.id))
-    })
-    item.fields.photos = photos
-  })
-
-  return {
-    props: {
-      entry: entries,
-    }, // will be passed to the page component as props
-  }
-}
