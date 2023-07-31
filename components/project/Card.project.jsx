@@ -22,16 +22,28 @@ function CardProject({ item }) {
     tech_stacks,
   } = item.fields
   return (
-    <div className={`h-full p-2`}>
-      <div className={`flex justify-center mb-4`}>
-        <img
-          alt={`${name} image`}
-          src={photos[0]}
-          className={`h-[21rem] object-cover`}
-        />
-      </div>
-      <div className={`flex justify-center flex-col`}>
-        {start_at && <Period start_at={start_at} end_at={end_at}></Period>}
+    <div
+      className={`p-2 `}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        border: '1px solid #353535',
+        borderRadius: '10px',
+      }}
+    >
+      <div
+        style={{
+          backgroundImage: `url(${photos[0]})`,
+          backgroundSize: 'cover',
+          height: '14rem',
+          width: '100%',
+        }}
+        alt={`${name} image`}
+        className={`flex justify-center mb-3`}
+      />
+
+      <div className={`flex flex-col w-full px-4 mb-2 flex-grow`}>
         {name && (
           <Name
             name={name}
@@ -41,9 +53,13 @@ function CardProject({ item }) {
           ></Name>
         )}
         {description && <Description description={description}></Description>}
+        {/*
         {members && <Member members={members}></Member>}
-        {tech_stacks && <TechStack tech_stacks={tech_stacks}></TechStack>}
+        {tech_stacks && <TechStack tech_stacks={tech_stacks}></TechStack>}  
         {prizes.value && <Prize prizes={prizes}></Prize>}
+        */}
+      </div>
+      <div className={`px-4`}>
         {github && <Github github={github}></Github>}
       </div>
     </div>

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import styles from '../../styles/layout.module.css'
 
 function Github({ github }) {
   return (
@@ -8,8 +9,12 @@ function Github({ github }) {
           <Link key={git.key} href={git.value}>
             <a target={`_blank`}>
               <div className={`flex items-center cursor-pointer`}>
-                <span className={`material-icons mr-1`}>link</span>
-                <span>{git.key} Github</span>
+                <span className={`material-icons mr-1 text-gray-200`}>
+                  link
+                </span>
+                <span className={`text-gray-200 text-sm ${styles.ProjectFont}`}>
+                  {git.key} Github
+                </span>
               </div>
             </a>
           </Link>

@@ -13,6 +13,9 @@ function MyApp({ Component, pageProps }) {
   if (router.pathname === '/') {
     mainStyle = `flex-1` // index.js에는 mainstyle 적용을 하지 않습니다.
   }
+  if (router.pathname === '/projects') {
+    mainStyle = `flex-1` // index.js에는 mainstyle 적용을 하지 않습니다.
+  }
 
   return (
     <>

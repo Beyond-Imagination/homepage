@@ -1,7 +1,9 @@
+import styles from '../../styles/layout.module.css'
+
 function Name({ name, onClick }) {
   return (
     <div
-      className={`text-3xl font-bold my-4 cursor-pointer hover:underline`}
+      className={`text-2xl font-semibold my-4 cursor-pointer hover:underline text-gray-200 ${styles.ProjectFont}`}
       onClick={onClick}
     >
       {name}

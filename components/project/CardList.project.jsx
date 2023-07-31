@@ -5,7 +5,7 @@ function CardListProject({ projects }) {
 
   return (
     <div
-      className={`grid desktop:grid-cols-4 tablet:grid-cols-2 grid-cols-1 gap-4`}
+      className={`grid desktop:grid-cols-3 tablet:grid-cols-3 grid-cols-1 gap-12`}
     >
       {items
         .sort((a, b) => {

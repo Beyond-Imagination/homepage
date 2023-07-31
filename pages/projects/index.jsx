@@ -1,6 +1,7 @@
 import ProjectCardList from '@/components/project/CardList.project'
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import { useState, useEffect } from 'react'
+import styles from '../../styles/layout.module.css'
 
 function Project() {
   const [projects, setProjects] = useState([])
@@ -33,11 +34,20 @@ function Project() {
   }, [])
 
   return (
-    <div className={`h-full`}>
+    <div
+      className="h-full pt-2 card-project"
+      style={{ backgroundColor: '#141416' }}
+    >
       <div className={`flex justify-center`}>
-        <h1 className={`text-5xl font-bold my-12`}>프로젝트 소개</h1>
+        <h1
+          className={`text-5xl font-bold pt-12 my-28 text-gray-300 ${styles.HeaderFont}`}
+        >
+          About Projects
+        </h1>
       </div>
-      <ProjectCardList projects={projects}></ProjectCardList>
+      <div className="px-40 pb-24">
+        <ProjectCardList projects={projects}></ProjectCardList>
+      </div>
     </div>
   )
 }
