@@ -36,7 +36,7 @@ function CardProject({ item }) {
         style={{
           backgroundImage: `url(${photos[0]})`,
           backgroundSize: 'cover',
-          height: '14rem',
+          height: '20rem',
           width: '100%',
         }}
         alt={`${name} image`}
