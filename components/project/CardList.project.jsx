@@ -9,7 +9,7 @@ function CardListProject({ projects }) {
     >
       {items
         .sort((a, b) => {
-          return new Date(b.fields.end_at) - new Date(a.fields.end_at)
+          return new Date(b.fields.start_at) - new Date(a.fields.start_at)
         })
         .map((item, index) => (
           <Card key={item.sys.id} item={item}></Card>
