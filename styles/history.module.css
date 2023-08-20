@@ -29,6 +29,7 @@
 .historyItem.show {
     opacity: 1;
     transform: none;
+    z-index: 1;
 }
 
 .historyItem:nth-child(odd) {
