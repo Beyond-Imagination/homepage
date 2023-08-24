@@ -21,6 +21,7 @@
     "react-photo-album": "^2.2.2",
     "react-slick": "^0.29.0",
     "slick-carousel": "^1.8.1",
+    "styled-components": "^6.0.7",
     "yet-another-react-lightbox": "^2.2.3"
   },
   "devDependencies": {

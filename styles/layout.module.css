@@ -21,3 +21,38 @@
 .ProjectFont {
     font-family: 'Pretendard', sans-serif;
 }
+
+.containerMain {
+    min-width: 686px;
+}
+
+.leftPanel {
+    width: 320px;
+    margin-right: 20px;
+}
+
+.rightPanel {
+    width: 346px;
+}
+
+@media (min-width: 1281px) {
+
+    .containerMain {
+        width: 1100px;
+    }
+
+    .leftPanel {
+        width: 380px;
+        margin-right: 30px;
+    }
+
+    .rightPanel {
+        width: 790px;
+    }
+    
+}
+
+.photoContainer {
+    width: 686px;
+    height: 387px;
+}

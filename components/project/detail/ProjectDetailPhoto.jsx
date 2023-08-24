@@ -38,6 +38,7 @@ const ProjectDetailPhoto = ({ project, photoNum, selectPhotoNum }) => {
       </div>
       <button
         type="button"
+        style={{ left: '10%' }}
         className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
         onClick={() => {
           selectPhotoNum(Math.max(photoNum - 1, 0))
@@ -64,6 +65,7 @@ const ProjectDetailPhoto = ({ project, photoNum, selectPhotoNum }) => {
       </button>
       <button
         type="button"
+        style={{ right: '10%' }}
         className="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
         onClick={() => {
           selectPhotoNum(Math.min(photoNum + 1, project.photos.length - 1))
