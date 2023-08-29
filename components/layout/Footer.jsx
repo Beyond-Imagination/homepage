@@ -101,6 +101,15 @@ const Footer = ({ className }) => {
                   <img src="/images/kakao.png" alt="Kakao" />
                 </a>
               </Link>
+              <Link href="https://www.instagram.com/team.beyond_imagination/">
+                <a className="ml-2 mt-1 mr-1">
+                  <img
+                    src="/images/instagram.png"
+                    alt="instagram"
+                    style={{ width: '23px', height: '23px' }}
+                  />
+                </a>
+              </Link>
             </div>
           </div>
         </div>
