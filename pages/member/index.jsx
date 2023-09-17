@@ -19,9 +19,11 @@ function Member() {
   }
 
   return (
-    <div className={`h-full`}>
-      <CardList title="팀원 소개" members={members.remain_member}></CardList>
-      <CardList title="탈퇴 멤버" members={members.left_member}></CardList>
+    <div className style={{ backgroundColor: '#141416' }}>
+      <div className={`h-full mt-16 pb-24`}>
+        <CardList title="팀원 소개" members={members.remain_member}></CardList>
+        <CardList title="탈퇴 멤버" members={members.left_member}></CardList>
+      </div>
     </div>
   )
 }

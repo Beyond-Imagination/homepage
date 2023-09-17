@@ -11,8 +11,6 @@
   align-items: center;
 }
 
-
-
 .title a {
   color: #0070f3;
   text-decoration: none;
@@ -94,19 +92,17 @@
 }
 
 .member {
-  height: 650px;
+  height: 700px;
   width: 100%;
-  background-color: #f8f7f7;
-  padding: 20px;
-
+  background-color: #2e2b2b;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   color: black;
   border-radius: 10px;
-  border: white 3px solid;
 }
 
 .captain {
-  border: #dbad47 5px solid;
+  border: #dbad47 3px solid;
 
 }

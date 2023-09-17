@@ -1,6 +1,13 @@
 function Description({ description }) {
   console.log(description)
-  return <p style={{ whiteSpace: 'pre-line' }}> {description}</p>
+  return (
+    <p
+      className={'text-gray-200 text-justify'}
+      style={{ whiteSpace: 'pre-line' }}
+    >
+      {description}
+    </p>
+  )
 }
 
 export default Description
