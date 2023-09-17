@@ -12,12 +12,20 @@ job("Build and deploy") {
         env["SPACE_ID"] = "{{ project:NEXT_PUBLIC_SPACE_ID }}"
         env["DELIVERY_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN }}"
         env["PREVIEW_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN }}"
+        env["NEWRELIC_AGENT_ID_PROD"] = "{{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_PROD }}"
+        env["NEWRELIC_AGENT_ID_DEV"] = "{{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_DEV }}"
 
         shellScript {
             content = """
                 echo "NEXT_PUBLIC_SPACE_ID=${'$'}SPACE_ID" >> .env
                 echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env
                 echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env
+
+                if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
+                    echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID=${'$'}NEWRELIC_AGENT_ID_PROD" >> .env
+                else
+                    echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID=${'$'}NEWRELIC_AGENT_ID_DEV" >> .env
+                fi
 
                 yarn
                 yarn build
