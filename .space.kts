@@ -4,6 +4,7 @@ job("Build and deploy") {
             anyBranchMatching {
                 +"main"
                 +"develop"
+                +"test"
             }
         }
     }
@@ -12,8 +13,6 @@ job("Build and deploy") {
         env["SPACE_ID"] = "{{ project:NEXT_PUBLIC_SPACE_ID }}"
         env["DELIVERY_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN }}"
         env["PREVIEW_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN }}"
-        env["NEWRELIC_AGENT_ID_PROD"] = "{{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_PROD }}"
-        env["NEWRELIC_AGENT_ID_DEV"] = "{{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_DEV }}"
 
         shellScript {
             content = """
@@ -22,9 +21,9 @@ job("Build and deploy") {
                 echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env
 
                 if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
-                    echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID=${'$'}NEWRELIC_AGENT_ID_PROD" >> .env
+                    echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_PROD }}" >> .env
                 else
-                    echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID=${'$'}NEWRELIC_AGENT_ID_DEV" >> .env
+                    echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_DEV }}" >> .env
                 fi
 
                 yarn
@@ -50,14 +49,12 @@ job("Build and deploy") {
 
                 echo ${'$'}JB_SPACE_GIT_BRANCH
 
-                if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/develop" ]; then
-                    aws s3 sync ${'$'}JB_SPACE_FILE_SHARE_PATH/out s3://beyond-imagination-dev/out
-                    aws cloudfront create-invalidation --distribution-id EO4ZCP5M2WO4J --paths "/*"
-                elif [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
+                if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
                     aws s3 sync ${'$'}JB_SPACE_FILE_SHARE_PATH/out s3://beyond-imagination-main/out
                     aws cloudfront create-invalidation --distribution-id E2DTRGJDB5D9Z8 --paths "/*"
                 else
-                    echo "Deployment is not supported on this branch."
+                    aws s3 sync ${'$'}JB_SPACE_FILE_SHARE_PATH/out s3://beyond-imagination-dev/out
+                    aws cloudfront create-invalidation --distribution-id EO4ZCP5M2WO4J --paths "/*"
                 fi
             """
         }
