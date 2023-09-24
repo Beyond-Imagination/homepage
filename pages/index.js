@@ -220,7 +220,7 @@ export default function Home() {
                       </div>
                       <div className="w-3/4">
                         <SlideTypography type="body1">
-                          {v.fields.prizes.value}
+                          {v.fields.prizes?.value || 'X'}
                         </SlideTypography>
                       </div>
                     </div>

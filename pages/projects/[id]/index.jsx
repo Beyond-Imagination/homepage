@@ -139,20 +139,18 @@ function ProjectDetail() {
                 <ProjectDetailContent
                   title={'수상 경력'}
                   content={
-                    project.prizes.length > 0 ? (
-                      project.prizes?.map((v, index) => (
+                    project.prizes?.length > 0 ? (
+                      project.prizes.map((v, index) => (
                         <div
                           key={index}
                         >{`${v.prize}, ${v.date} (${v.prize})  `}</div>
                       ))
                     ) : (
-                      <div>
-                        {`${project.prizes.value}`}
-                        <br></br>
-                      </div>
+                      <div>X</div>
                     )
                   }
                 ></ProjectDetailContent>
+
                 <ProjectDetailContent
                   title={'첨부 파일'}
                   content={project.attachments?.map((v, index) => (
