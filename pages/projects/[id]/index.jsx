@@ -122,11 +122,11 @@ function ProjectDetail() {
                     </span>
                   ))}
                 ></ProjectDetailContent>
-
                 <ProjectDetailContent
                   title={'프로젝트 기간'}
-                  content={`${project.start_at} ~ ${project.end_at}`}
+                  content={`${project.start_at} ~ ${project.end_at || ''}`}
                 ></ProjectDetailContent>
+
                 <ProjectDetailContent
                   title={'기술 스택'}
                   content={project.tech_stacks?.map((v, index) => (
