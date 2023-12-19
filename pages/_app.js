@@ -19,6 +19,9 @@ function MyApp({ Component, pageProps }) {
   if (router.pathname.startsWith('/member')) {
     mainStyle = `flex-1` // '/member'로 시작하는 모든 경로에 mainStyle을 적용하지 않습니다.
   }
+  if (router.pathname.startsWith('/photo')) {
+    mainStyle = `flex-1` // '/photo'로 시작하는 모든 경로에 mainStyle을 적용하지 않습니다.
+  }
 
   return (
     <>
