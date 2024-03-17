@@ -1,3 +1,5 @@
+'use client'
+
 import Prize from '@/components/project/Prize.project'
 import Github from '@/components/project/Github.project'
 import TechStack from '@/components/project/TechStack.proeject'
@@ -5,7 +7,7 @@ import Member from '@/components/project/Member.project'
 import Description from '@/components/project/Description.project'
 import Name from '@/components/project/Name.project'
 import Period from '@/components/project/Period.project'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 function CardProject({ item }) {
   const router = useRouter()
@@ -55,7 +57,7 @@ function CardProject({ item }) {
         {description && <Description description={description}></Description>}
         {/*
         {members && <Member members={members}></Member>}
-        {tech_stacks && <TechStack tech_stacks={tech_stacks}></TechStack>}  
+        {tech_stacks && <TechStack tech_stacks={tech_stacks}></TechStack>}
         {prizes.value && <Prize prizes={prizes}></Prize>}
         */}
       </div>

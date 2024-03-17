@@ -1,3 +1,4 @@
+'use client'
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import PhotoAlbum from 'react-photo-album'
 import { useState, useEffect } from 'react'

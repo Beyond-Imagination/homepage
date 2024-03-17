@@ -1,3 +1,4 @@
+'use client'
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import styles from '../../styles/history.module.css'
 import HistoryItem from '@/components/history/HistoryItem'
@@ -19,7 +20,7 @@ function History() {
   }, [])
 
   return (
-    <div className={`h-full`}>
+    <div className={`h-full pt-1`}>
       <div className={`${styles.historyContainer}`}>
         {histories.map((history) => (
           <HistoryItem data={history} key={history.sys.id} />

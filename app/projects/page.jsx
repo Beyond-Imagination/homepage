@@ -1,3 +1,4 @@
+'use client'
 import ProjectCardList from '@/components/project/CardList.project'
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import { useState, useEffect } from 'react'

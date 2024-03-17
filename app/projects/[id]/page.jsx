@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+'use client'
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import ProjectCardList from '@/components/project/CardList.project'
 import { useEffect, useState } from 'react'
@@ -28,13 +28,11 @@ const ProjectDetailContent = (props) => {
     </div>
   )
 }
-
-function ProjectDetail() {
-  const router = useRouter()
+export default function ProjectDetail({ params }) {
+  const { id } = params
   const [photoNum, selectPhotoNum] = useState(0)
   const [entry, setEntry] = useState([])
   const [isSummaryVisible, setIsSummaryVisible] = useState(false)
-  const { id } = router.query
   const [isPhotoVisible, setIsPhotoVisible] = useState(false)
   const [isPopupVisible, setIsPopupVisible] = useState(false)
 
@@ -73,7 +71,7 @@ function ProjectDetail() {
   const project = entry.items[0].fields
   return (
     <div
-      className={`h-full pt-28 pb-60`}
+      className={`h-full pt-28 pb-60 text-white`}
       style={{ backgroundColor: '#141416' }}
     >
       <div className={`flex justify-center`}>
@@ -155,15 +153,14 @@ function ProjectDetail() {
                   title={'첨부 파일'}
                   content={project.attachments?.map((v, index) => (
                     <div key={index}>
-                      <Link href={v.fields.file.url}>
-                        <a
-                          href={v.fields.file.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className={`hover:underline`}
-                        >
-                          {v.fields.file.fileName}
-                        </a>
+                      <Link
+                        href={v.fields.file.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`hover:underline`}>
+
+                        {v.fields.file.fileName}
+
                       </Link>
                       <br></br>
                     </div>
@@ -187,7 +184,6 @@ function ProjectDetail() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ProjectDetail

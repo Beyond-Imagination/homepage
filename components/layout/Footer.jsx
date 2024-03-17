@@ -3,7 +3,7 @@ import styles from '../../styles/layout.module.css'
 
 const Footer = ({ className }) => {
   return (
-    <footer className={`${className}`} style={{ background: '#111111' }}>
+    <footer className={`px-12`} style={{ background: '#111111' }}>
       <div className={`container py-16 mx-auto flex flex-wrap`}>
         <div className="flex w-full justify-between">
           <div className="w-1/8 pl-4 pr-20">
@@ -19,96 +19,98 @@ const Footer = ({ className }) => {
             </h2>
             <nav className="list-none mb-10 space-y-2">
               <li>
-                <Link href="/member">
-                  <a
-                    className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}
-                  >
+                <Link
+                  href="/member"
+                  className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}>
+
                     Member
-                  </a>
+
                 </Link>
               </li>
               <li>
-                <Link href="/projects">
-                  <a
-                    className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}
-                  >
+                <Link
+                  href="/projects"
+                  className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}>
+
                     Projects
-                  </a>
+
                 </Link>
               </li>
               <li>
-                <Link href="/history">
-                  <a
-                    className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}
-                  >
+                <Link
+                  href="/history"
+                  className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}>
+
                     History
-                  </a>
+
                 </Link>
               </li>
               <li>
-                <Link href="/photo">
-                  <a
-                    className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}
-                  >
+                <Link
+                  href="/photo"
+                  className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}>
+
                     Photo
-                  </a>
+
                 </Link>
               </li>
             </nav>
           </div>
           <div className="ml-auto">
             <Link href="mailto:team@beyond-imagination.kr">
-              <a href="mailto:team@beyond-imagination.kr">
-                <div
+
+              <div
+                style={{
+                  position: 'relative',
+                  width: '369px',
+                  height: '140px',
+                  border: '1px solid #B4B4B4',
+                  color: '#B4B4B4',
+                  backgroundColor: '#111111',
+                }}
+              >
+                <img
+                  className="mr-3 mt-3"
+                  src="/images/Arrow 1.png"
+                  alt="Logo"
                   style={{
-                    position: 'relative',
-                    width: '369px',
-                    height: '140px',
-                    border: '1px solid #B4B4B4',
-                    color: '#B4B4B4',
-                    backgroundColor: '#111111',
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                  }}
+                />
+
+                <div
+                  className={`mb-3 ml-3 text-lg ${styles.FooterFont}`}
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
                   }}
                 >
-                  <img
-                    className="mr-3 mt-3"
-                    src="/images/Arrow 1.png"
-                    alt="Logo"
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      right: 0,
-                    }}
-                  />
-
-                  <div
-                    className={`mb-3 ml-3 text-lg ${styles.FooterFont}`}
-                    style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                    }}
-                  >
-                    CONTACT
-                    <br />
-                    Beyond Imagination
-                  </div>
+                  CONTACT
+                  <br />
+                  Beyond Imagination
                 </div>
-              </a>
+              </div>
+
             </Link>
             <div className="flex justify-end mt-4">
               <Link href="https://open.kakao.com/o/gMapmsuf">
-                <a>
-                  <img src="/images/kakao.png" alt="Kakao" />
-                </a>
+
+                <img src="/images/kakao.png" alt="Kakao" />
+
               </Link>
-              <Link href="https://www.instagram.com/team.beyond_imagination/">
-                <a className="ml-2 mt-1 mr-1">
-                  <img
-                    src="/images/instagram.png"
-                    alt="instagram"
-                    style={{ width: '23px', height: '23px' }}
-                  />
-                </a>
+              <Link
+                href="https://www.instagram.com/team.beyond_imagination/"
+                className="ml-2 mt-1 mr-1">
+
+                <img
+                  src="/images/instagram.png"
+                  alt="instagram"
+                  style={{ width: '23px', height: '23px' }}
+                />
+
               </Link>
             </div>
           </div>
@@ -123,7 +125,7 @@ const Footer = ({ className }) => {
         </div>
       </div>
     </footer>
-  )
+  );
 }
 
 export default Footer

@@ -1,14 +1,12 @@
+'use client'
 import Typography from '@/components/common/Typography'
-import { contentfulClientApi } from '@/utils/contentfu-api'
-import { useState, useEffect } from 'react'
-import GitHubIcon from '@mui/icons-material/GitHub'
-import EmailIcon from '@mui/icons-material/Email'
-import Link from 'next/link'
 import PageTemplate1 from '@/components/home/PageTemplate1'
 import PageTemplate2 from '@/components/home/PageTemplate2'
 import SlideTypography from '@/components/common/SlideTypography'
+import { fetchProjects } from '../lib/api'
 import Slider from 'react-slick'
-
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 function CustomNextArrow(props) {
   const { className, style, onClick } = props
   return (
@@ -51,10 +49,8 @@ function CustomPrevArrow(props) {
     </div>
   )
 }
-
-export default function Home() {
-  const [projects, setProjects] = useState([])
-
+export default async function Home() {
+  const projects = await fetchProjects()
   const settings = {
     dots: false,
     infinite: false,
@@ -66,35 +62,10 @@ export default function Home() {
     prevArrow: <CustomPrevArrow />,
   }
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      const entries = await contentfulClientApi.getEntries({
-        select: 'fields',
-        content_type: 'projects',
-      })
-      const map = new Map()
-      entries.includes.Asset.forEach((asset) => {
-        const key = asset.sys.id
-        const value = `https:${asset.fields.file.url}`
-        map.set(key, value)
-      })
-      entries.items.forEach((item) => {
-        let photos = []
-        item.fields.photos.forEach((photo) => {
-          photos.push(map.get(photo.sys.id))
-        })
-        item.fields.photos = photos
-      })
-      setProjects(entries.items)
-      console.log('entries.items', entries.items)
-    }
-    fetchProjects()
-  }, [])
-
   return (
     <>
       <PageTemplate1 bg={'/images/newintroduce1.png'}>
-        <div className="text-container flex-start ml-48 mb-18">
+        <div className="text-container flex-start ml-48 mb-18 text-white">
           <div>
             <Typography type={`h3`}>세상을 바꾸는 또라이가 되자</Typography>
           </div>
@@ -115,7 +86,7 @@ export default function Home() {
         </div>
       </PageTemplate1>
       <PageTemplate2 bg={'/images/newintroduce2.png'}>
-        <div className="text-container mb-8">
+        <div className="text-container mb-8 text-white">
           <div>
             <Typography type={`h3`}>
               프로그래밍으로 세상을 바꿔갑니다
@@ -151,7 +122,7 @@ export default function Home() {
             {projects.map((v) => (
               <div
                 key={v.fields.name}
-                className={`border border-transparent flex`}
+                className={`border border-transparent flex text-white`}
               >
                 <div className="flex justify-start">
                   <SlideTypography type={'h4'} className="pt-4 pl-24 pb-24">

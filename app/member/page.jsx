@@ -1,17 +1,9 @@
-import { useEffect, useState } from 'react'
+'use client'
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import CardList from '@/components/member/CardList.member'
 
-function Member() {
-  const [members, setMembers] = useState(null)
-
-  useEffect(() => {
-    async function fetchData() {
-      const data = await getEntities()
-      setMembers(data)
-    }
-    fetchData()
-  }, [])
+export default async function Member() {
+  const members = await getEntities()
 
   //contentful api에서 데이터를 가져오지 못했을 때
   if (!members) {
@@ -32,7 +24,7 @@ async function getEntities() {
   const entries = await contentfulClientApi.getEntries({
     select: 'fields',
     content_type: 'member',
-    order: 'fields.join_date',
+    order: 'fields.join_date'
   })
   const remain_member = []
   const left_member = []
@@ -59,4 +51,3 @@ async function getEntities() {
   return { remain_member: remain_member, left_member: left_member }
 }
 
-export default Member
