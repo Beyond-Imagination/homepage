@@ -1,10 +1,68 @@
-job("Build and deploy") {
+job("[FE] Merge Request") {
+    startOn {
+        codeReviewOpened {
+            branchToCheckout = CodeReviewBranch.MERGE_REQUEST_SOURCE
+        }
+        gitPush {
+            anyRefMatching {
+                +"refs/merge/*/head"
+            }
+        }
+    }
+
+    container(displayName = "build & test", image = "node:alpine") {
+        env["SPACE_ID"] = "{{ project:NEXT_PUBLIC_SPACE_ID }}"
+        env["DELIVERY_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN }}"
+        env["PREVIEW_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN }}"
+
+        cache {
+            // package.json의 내용을 해시를 하고 그 값을 캐싱키로 사용
+            // 이를 통해 package.json이 동일하면 캐시를 사용하도록 유도하고 달라지면 캐시를 새로 만든다
+            // 참고: https://www.jetbrains.com/help/space/cache-files.html#upload-and-reuse-cached-files
+            storeKey = "npm-{{ hashFiles('package.json') }}"
+
+            // Fallback 옵션인데 불필요 할것 같아서 주석처리
+            /*restoreKeys {
+                +"npm-master"
+            }*/
+
+            // 캐시가 들어갈 디렉토리
+            localPath = "node_modules"
+        }
+
+        shellScript {
+            content = """
+                echo "NEXT_PUBLIC_SPACE_ID=${'$'}SPACE_ID" >> .env.production
+                echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env.production
+                echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env.production
+
+                if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/develop" ]; then
+                    cat .env.development > .env.production
+                fi
+
+
+                if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
+                    echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_PROD }}" >> .env.production
+                else
+                    echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_DEV }}" >> .env.production
+                fi
+                set -e
+                if [ -z "${'$'}(ls -A node_modules)" ]; then
+                    # 캐시 디렉토리가 비어있을때에만 yarn install 실행
+                    yarn install
+                fi
+                yarn build
+            """
+        }
+    }
+}
+
+job("[FE] Deploy") {
     startOn {
         gitPush {
             anyBranchMatching {
                 +"main"
                 +"develop"
-                +"test"
             }
         }
     }
@@ -14,21 +72,44 @@ job("Build and deploy") {
         env["DELIVERY_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN }}"
         env["PREVIEW_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN }}"
 
+        cache {
+            // package.json의 내용을 해시를 하고 그 값을 캐싱키로 사용
+            // 이를 통해 package.json이 동일하면 캐시를 사용하도록 유도하고 달라지면 캐시를 새로 만든다
+            // 참고: https://www.jetbrains.com/help/space/cache-files.html#upload-and-reuse-cached-files
+            storeKey = "npm-{{ hashFiles('package.json') }}"
+
+            // Fallback 옵션인데 불필요 할것 같아서 주석처리
+            /*restoreKeys {
+                +"npm-master"
+            }*/
+
+            // 캐시가 들어갈 디렉토리
+            localPath = "node_modules"
+        }
+
         shellScript {
             content = """
-                echo "NEXT_PUBLIC_SPACE_ID=${'$'}SPACE_ID" >> .env
-                echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env
-                echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env
+ 
+                echo "NEXT_PUBLIC_SPACE_ID=${'$'}SPACE_ID" >> .env.production
+                echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env.production
+                echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env.production
 
-                if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
-                    echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_PROD }}" >> .env
-                else
-                    echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_DEV }}" >> .env
+                if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/develop" ]; then
+                    cat .env.development > .env.production
                 fi
 
-                yarn
-                yarn build
 
+                if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
+                    echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_PROD }}" >> .env.production
+                else
+                    echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_DEV }}" >> .env.production
+                fi
+
+                if [ -z "${'$'}(ls -A node_modules)" ]; then
+                    # 캐시 디렉토리가 비어있을때에만 yarn install 실행
+                    yarn install
+                fi
+                yarn build
                 cp -r out ${'$'}JB_SPACE_FILE_SHARE_PATH/out
             """
         }
@@ -52,9 +133,11 @@ job("Build and deploy") {
                 if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
                     aws s3 sync ${'$'}JB_SPACE_FILE_SHARE_PATH/out s3://beyond-imagination-main/out
                     aws cloudfront create-invalidation --distribution-id E2DTRGJDB5D9Z8 --paths "/*"
-                else
+                elif [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/develop" ]; then
                     aws s3 sync ${'$'}JB_SPACE_FILE_SHARE_PATH/out s3://beyond-imagination-dev/out
                     aws cloudfront create-invalidation --distribution-id EO4ZCP5M2WO4J --paths "/*"
+                else
+                    echo "Deployment is not supported on this branch."
                 fi
             """
         }
