@@ -36,10 +36,6 @@ job("[FE] Merge Request") {
                 echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env.production
                 echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env.production
 
-                if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/develop" ]; then
-                    cat .env.development > .env.production
-                fi
-
 
                 if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
                     echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_PROD }}" >> .env.production
@@ -93,10 +89,6 @@ job("[FE] Deploy") {
                 echo "NEXT_PUBLIC_SPACE_ID=${'$'}SPACE_ID" >> .env.production
                 echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env.production
                 echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env.production
-
-                if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/develop" ]; then
-                    cat .env.development > .env.production
-                fi
 
 
                 if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
