@@ -1,12 +1,8 @@
 'use client'
 
-import Prize from '@/components/project/Prize.project'
 import Github from '@/components/project/Github.project'
-import TechStack from '@/components/project/TechStack.proeject'
-import Member from '@/components/project/Member.project'
 import Description from '@/components/project/Description.project'
 import Name from '@/components/project/Name.project'
-import Period from '@/components/project/Period.project'
 import { useRouter } from 'next/navigation'
 
 function CardProject({ item }) {
@@ -50,7 +46,7 @@ function CardProject({ item }) {
           <Name
             name={name}
             onClick={(event) => {
-              router.push(`/projects/${item.sys.id}`)
+              router.push(`/projects/detail?id=${item.sys.id}`)
             }}
           ></Name>
         )}

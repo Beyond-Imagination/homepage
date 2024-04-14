@@ -1,74 +1,29 @@
 'use client'
-import { contentfulClientApi } from '@/utils/contentfu-api'
-import ProjectCardList from '@/components/project/CardList.project'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-import styles from '../../../styles/layout.module.css'
-import styled from 'styled-components'
+import styles from '@/styles/layout.module.css'
 import ProjectDetailPhoto from '@/components/project/detail/ProjectDetailPhoto'
+import { fetchProjectById } from '@/lib/api'
+import useSWR from 'swr'
+import { ProjectDetailContent } from '@/components/project/detail/ProjectDetailContent'
 
-const SummaryToggleContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-`
-const StyledProjectDetailPhoto = styled(ProjectDetailPhoto)`
-  width: 686px;
-  height: 387px;
-`
-
-const ProjectDetailContent = (props) => {
-  return (
-    <div className={`mb-5 flex items-center`}>
-      <h2 className={`text-base font-bold text-gray-300 w-2/5`}>
-        {props.title}
-      </h2>
-      <div className={`text-sm w-3/5`}>{props.content}</div>
-    </div>
-  )
-}
-export default function ProjectDetail({ params }) {
-  const { id } = params
+export default function ProjectDetail({ id }) {
   const [photoNum, selectPhotoNum] = useState(0)
-  const [entry, setEntry] = useState([])
   const [isSummaryVisible, setIsSummaryVisible] = useState(false)
   const [isPhotoVisible, setIsPhotoVisible] = useState(false)
   const [isPopupVisible, setIsPopupVisible] = useState(false)
 
-  useEffect(() => {
-    async function fetchData() {
-      const entries = await contentfulClientApi.getEntries({
-        select: 'fields',
-        content_type: 'projects',
-        'sys.id': id,
-      })
+  const { data, error, isLoading } = useSWR(`/api/projects/${id}`, () => {
+    return fetchProjectById(id)
+  })
 
-      const map = new Map()
-      entries.includes.Asset.forEach((asset) => {
-        const key = asset.sys.id
-        const value = `https:${asset.fields.file.url}`
-        map.set(key, value)
-      })
-      entries.items.forEach((item) => {
-        let photos = []
-        item.fields.photos.forEach((photo) => {
-          photos.push(map.get(photo.sys.id))
-        })
-        item.fields.photos = photos
-      })
-
-      setEntry(entries)
-    }
-
-    fetchData()
-  }, [])
-
-  if (entry.length === 0) {
-    return <div>wait</div>
+  if (error) {
+    return <div>failed to load</div>
   }
-
-  const project = entry.items[0].fields
+  if (isLoading) {
+    return <div>loading...</div>
+  }
+  const project = data
   return (
     <div
       className={`h-full pt-28 pb-60 text-white`}
@@ -101,13 +56,13 @@ export default function ProjectDetail({ params }) {
               alignSelf: 'start',
             }}
           >
-            <SummaryToggleContainer>
+            <div className={`flex justify-between items-center w-full`}>
               <h2 className="text-xl font-bold text-white">프로젝트 요약</h2>
               <span className="flex-grow"></span>{' '}
               <button onClick={() => setIsSummaryVisible(!isSummaryVisible)}>
                 {isSummaryVisible ? '▲' : '▼'}
               </button>
-            </SummaryToggleContainer>
+            </div>
 
             {isSummaryVisible && (
               <div className="mt-6">
@@ -157,10 +112,9 @@ export default function ProjectDetail({ params }) {
                         href={v.fields.file.url}
                         target="_blank"
                         rel="noreferrer"
-                        className={`hover:underline`}>
-
+                        className={`hover:underline`}
+                      >
                         {v.fields.file.fileName}
-
                       </Link>
                       <br></br>
                     </div>
@@ -184,6 +138,5 @@ export default function ProjectDetail({ params }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
-

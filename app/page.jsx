@@ -7,6 +7,8 @@ import { fetchProjects } from '../lib/api'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
 function CustomNextArrow(props) {
   const { className, style, onClick } = props
   return (
@@ -24,7 +26,12 @@ function CustomNextArrow(props) {
       }}
       onClick={onClick}
     >
-      <img src="/images/slideR.png" />
+      <img
+        src="/images/slideR.png"
+        width={100}
+        height={100}
+        alt={'Right Slide Button'}
+      />
     </div>
   )
 }
@@ -45,12 +52,22 @@ function CustomPrevArrow(props) {
       }}
       onClick={onClick}
     >
-      <img src="/images/slideL.png" />
+      <img
+        src="/images/slideL.png"
+        width={100}
+        height={100}
+        alt={'Left Slide Button'}
+      />
     </div>
   )
 }
-export default async function Home() {
-  const projects = await fetchProjects()
+export default function Home() {
+  const [projects, setProjects] = useState([])
+  useEffect(() => {
+    fetchProjects().then((data) => {
+      setProjects(data)
+    })
+  }, [])
   const settings = {
     dots: false,
     infinite: false,
@@ -198,7 +215,7 @@ export default async function Home() {
                   </div>
                   <div className="w-1/2 justify-center">
                     <div className={`w-[500px] h-[500px] flex justify-center`}>
-                      <img
+                      <Image
                         src={v.fields.photos[0]}
                         alt=""
                         className={`bg-contain h-full`}

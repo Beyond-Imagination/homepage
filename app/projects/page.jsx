@@ -1,38 +1,19 @@
 'use client'
 import ProjectCardList from '@/components/project/CardList.project'
-import { contentfulClientApi } from '@/utils/contentfu-api'
-import { useState, useEffect } from 'react'
 import styles from '../../styles/layout.module.css'
+import { fetchProjects } from '@/lib/api'
+import useSWR from 'swr'
 
 function Project() {
-  const [projects, setProjects] = useState([])
+  const { data, error, isLoading } = useSWR('/api/projects', fetchProjects)
 
-  useEffect(() => {
-    async function fetchData() {
-      const entries = await contentfulClientApi.getEntries({
-        select: 'fields',
-        content_type: 'projects',
-      })
+  if (error) {
+    return <div>failed to load</div>
+  }
 
-      const map = new Map()
-      entries.includes.Asset.forEach((asset) => {
-        const key = asset.sys.id
-        const value = `https:${asset.fields.file.url}`
-        map.set(key, value)
-      })
-      entries.items.forEach((item) => {
-        let photos = []
-        item.fields.photos.forEach((photo) => {
-          photos.push(map.get(photo.sys.id))
-        })
-        item.fields.photos = photos
-      })
-
-      setProjects(entries)
-    }
-
-    fetchData()
-  }, [])
+  if (isLoading) {
+    return <div>loading...</div>
+  }
 
   return (
     <div
@@ -47,9 +28,10 @@ function Project() {
         </h1>
       </div>
       <div className="px-40 pb-24">
-        <ProjectCardList projects={projects}></ProjectCardList>
+        <ProjectCardList projects={data}></ProjectCardList>
       </div>
     </div>
   )
 }
+
 export default Project

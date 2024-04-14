@@ -1,30 +1,31 @@
 'use client'
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import CardList from '@/components/member/CardList.member'
+import useSWR from 'swr'
 
-export default async function Member() {
-  const members = await getEntities()
-
-  //contentful api에서 데이터를 가져오지 못했을 때
-  if (!members) {
-    return <div>Loading...</div>
+export default function Member() {
+  const { data, error, isLoading } = useSWR('/api/members', getMembers)
+  if (error) {
+    return <div>failed to load</div>
   }
-
+  if (isLoading) {
+    return <div>loading...</div>
+  }
   return (
-    <div className style={{ backgroundColor: '#141416' }}>
+    <div style={{ backgroundColor: '#141416' }}>
       <div className={`h-full mt-16 pb-24`}>
-        <CardList title="팀원 소개" members={members.remain_member}></CardList>
-        <CardList title="탈퇴 멤버" members={members.left_member}></CardList>
+        <CardList title="팀원 소개" members={data.remain_member}></CardList>
+        <CardList title="탈퇴 멤버" members={data.left_member}></CardList>
       </div>
     </div>
   )
 }
 
-async function getEntities() {
+async function getMembers() {
   const entries = await contentfulClientApi.getEntries({
     select: 'fields',
     content_type: 'member',
-    order: 'fields.join_date'
+    order: 'fields.join_date',
   })
   const remain_member = []
   const left_member = []
@@ -50,4 +51,3 @@ async function getEntities() {
   })
   return { remain_member: remain_member, left_member: left_member }
 }
-

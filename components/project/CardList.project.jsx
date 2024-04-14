@@ -1,13 +1,11 @@
 import Card from '@/components/project/Card.project'
 
 function CardListProject({ projects }) {
-  const items = projects.items || [] // items가 undefined인 경우, 빈 배열([])로 대체
-
   return (
     <div
       className={`grid desktop:grid-cols-3 tablet:grid-cols-3 grid-cols-1 gap-12`}
     >
-      {items
+      {projects
         .sort((a, b) => {
           return new Date(b.fields.start_at) - new Date(a.fields.start_at)
         })

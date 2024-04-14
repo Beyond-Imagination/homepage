@@ -21,44 +21,39 @@ const Footer = ({ className }) => {
               <li>
                 <Link
                   href="/member"
-                  className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}>
-
-                    Member
-
+                  className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}
+                >
+                  Member
                 </Link>
               </li>
               <li>
                 <Link
                   href="/projects"
-                  className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}>
-
-                    Projects
-
+                  className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}
+                >
+                  Projects
                 </Link>
               </li>
               <li>
                 <Link
                   href="/history"
-                  className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}>
-
-                    History
-
+                  className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}
+                >
+                  History
                 </Link>
               </li>
               <li>
                 <Link
                   href="/photo"
-                  className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}>
-
-                    Photo
-
+                  className={`${styles.FooterFont} text-[#B4B4B4] text-sm font-light hover:text-gray-800 `}
+                >
+                  Photo
                 </Link>
               </li>
             </nav>
           </div>
           <div className="ml-auto">
             <Link href="mailto:team@beyond-imagination.kr">
-
               <div
                 style={{
                   position: 'relative',
@@ -93,24 +88,20 @@ const Footer = ({ className }) => {
                   Beyond Imagination
                 </div>
               </div>
-
             </Link>
             <div className="flex justify-end mt-4">
               <Link href="https://open.kakao.com/o/gMapmsuf">
-
                 <img src="/images/kakao.png" alt="Kakao" />
-
               </Link>
               <Link
                 href="https://www.instagram.com/team.beyond_imagination/"
-                className="ml-2 mt-1 mr-1">
-
+                className="ml-2 mt-1 mr-1"
+              >
                 <img
                   src="/images/instagram.png"
                   alt="instagram"
                   style={{ width: '23px', height: '23px' }}
                 />
-
               </Link>
             </div>
           </div>
@@ -125,7 +116,7 @@ const Footer = ({ className }) => {
         </div>
       </div>
     </footer>
-  );
+  )
 }
 
 export default Footer
