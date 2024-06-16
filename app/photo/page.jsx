@@ -35,6 +35,7 @@ function Photo() {
       //get Contentful Data / Media
       const assets = await contentfulClientApi.getAssets({
         select: 'fields',
+        limit: 1000,
       })
 
       const photos = new Map()

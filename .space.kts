@@ -9,29 +9,33 @@ job("[FE] Merge Request") {
             }
         }
     }
+    parallel {
+        container(displayName = "build & test", image = "node:alpine") {
+            env["REVIEW_ID"] = "{{ run:review.id }}"
+            env["PROJECT_ID"] = "{{ run:project.id }}"
+            env["SPACE_AUTOMATION_AUTHORIZATION"] = "{{ project:SPACE_AUTOMATION_AUTHORIZATION }}"
 
-    container(displayName = "build & test", image = "node:alpine") {
-        env["SPACE_ID"] = "{{ project:NEXT_PUBLIC_SPACE_ID }}"
-        env["DELIVERY_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN }}"
-        env["PREVIEW_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN }}"
+            env["SPACE_ID"] = "{{ project:NEXT_PUBLIC_SPACE_ID }}"
+            env["DELIVERY_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN }}"
+            env["PREVIEW_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN }}"
 
-        cache {
-            // package.json의 내용을 해시를 하고 그 값을 캐싱키로 사용
-            // 이를 통해 package.json이 동일하면 캐시를 사용하도록 유도하고 달라지면 캐시를 새로 만든다
-            // 참고: https://www.jetbrains.com/help/space/cache-files.html#upload-and-reuse-cached-files
-            storeKey = "npm-{{ hashFiles('package.json') }}"
+            cache {
+                // package.json의 내용을 해시를 하고 그 값을 캐싱키로 사용
+                // 이를 통해 package.json이 동일하면 캐시를 사용하도록 유도하고 달라지면 캐시를 새로 만든다
+                // 참고: https://www.jetbrains.com/help/space/cache-files.html#upload-and-reuse-cached-files
+                storeKey = "npm-{{ hashFiles('package.json') }}"
 
-            // Fallback 옵션인데 불필요 할것 같아서 주석처리
-            /*restoreKeys {
-                +"npm-master"
-            }*/
+                // Fallback 옵션인데 불필요 할것 같아서 주석처리
+                /*restoreKeys {
+                    +"npm-master"
+                }*/
 
-            // 캐시가 들어갈 디렉토리
-            localPath = "node_modules"
-        }
+                // 캐시가 들어갈 디렉토리
+                localPath = "node_modules"
+            }
 
-        shellScript {
-            content = """
+            shellScript {
+                content = """
                 echo "NEXT_PUBLIC_SPACE_ID=${'$'}SPACE_ID" >> .env.production
                 echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env.production
                 echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env.production
@@ -47,8 +51,23 @@ job("[FE] Merge Request") {
                     # 캐시 디렉토리가 비어있을때에만 yarn install 실행
                     yarn install
                 fi
+                yarn reviewer &
                 yarn build
+                wait
             """
+            }
+        }
+
+        container(displayName = "send automation result", image = "gradle:6.1.1-jre11") {
+            env["REVIEW_ID"] = "{{ run:review.id }}"
+            kotlinScript { api ->
+                api.space().chats.messages.sendMessage(
+                        channel = ChannelIdentifier.Review(ReviewIdentifier.Id(System.getenv("REVIEW_ID"))),
+                        content = ChatMessage.Text(
+                                text = api.executionUrl()
+                        )
+                )
+            }
         }
     }
 }
@@ -85,7 +104,7 @@ job("[FE] Deploy") {
 
         shellScript {
             content = """
- 
+
                 echo "NEXT_PUBLIC_SPACE_ID=${'$'}SPACE_ID" >> .env.production
                 echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env.production
                 echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env.production
