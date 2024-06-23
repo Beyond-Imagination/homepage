@@ -14,10 +14,13 @@ job("[FE] Merge Request") {
             env["REVIEW_ID"] = "{{ run:review.id }}"
             env["PROJECT_ID"] = "{{ run:project.id }}"
             env["SPACE_AUTOMATION_AUTHORIZATION"] = "{{ project:SPACE_AUTOMATION_AUTHORIZATION }}"
-
             env["SPACE_ID"] = "{{ project:NEXT_PUBLIC_SPACE_ID }}"
             env["DELIVERY_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN }}"
             env["PREVIEW_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN }}"
+            env["ENVIRONMENT"] = "{{ project:NEXT_PUBLIC_ENVIRONMENT }}"
+            env["DELIVERY_ACCESS_DEV_TOKEN"] = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_DEV_TOKEN }}"
+            env["PREVIEW_ACCESS_DEV_TOKEN"] = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_DEV_TOKEN }}"
+            env["ENVIRONMENT_DEV"] = "{{ project:NEXT_PUBLIC_ENVIRONMENT_DEV }}"
 
             cache {
                 // package.json의 내용을 해시를 하고 그 값을 캐싱키로 사용
@@ -37,14 +40,17 @@ job("[FE] Merge Request") {
             shellScript {
                 content = """
                 echo "NEXT_PUBLIC_SPACE_ID=${'$'}SPACE_ID" >> .env.production
-                echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env.production
-                echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env.production
-
 
                 if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
                     echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_PROD }}" >> .env.production
+                    echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env.production
+                    echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env.production
+                    echo "NEXT_PUBLIC_ENVIRONMENT=${'$'}ENVIRONMENT" >> .env.production
                 else
                     echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_DEV }}" >> .env.production
+                    echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_DEV_TOKEN" >> .env.production
+                    echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_DEV_TOKEN" >> .env.production
+                    echo "NEXT_PUBLIC_ENVIRONMENT=${'$'}ENVIRONMENT_DEV" >> .env.production
                 fi
                 set -e
                 if [ -z "${'$'}(ls -A node_modules)" ]; then
@@ -86,6 +92,10 @@ job("[FE] Deploy") {
         env["SPACE_ID"] = "{{ project:NEXT_PUBLIC_SPACE_ID }}"
         env["DELIVERY_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN }}"
         env["PREVIEW_ACCESS_TOKEN"] = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN }}"
+        env["ENVIRONMENT"] = "{{ project:NEXT_PUBLIC_ENVIRONMENT }}"
+        env["DELIVERY_ACCESS_DEV_TOKEN"] = "{{ project:NEXT_PUBLIC_DELIVERY_ACCESS_DEV_TOKEN }}"
+        env["PREVIEW_ACCESS_DEV_TOKEN"] = "{{ project:NEXT_PUBLIC_PREVIEW_ACCESS_DEV_TOKEN }}"
+        env["ENVIRONMENT_DEV"] = "{{ project:NEXT_PUBLIC_ENVIRONMENT_DEV }}"
 
         cache {
             // package.json의 내용을 해시를 하고 그 값을 캐싱키로 사용
@@ -106,14 +116,17 @@ job("[FE] Deploy") {
             content = """
 
                 echo "NEXT_PUBLIC_SPACE_ID=${'$'}SPACE_ID" >> .env.production
-                echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env.production
-                echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env.production
-
 
                 if [ ${'$'}JB_SPACE_GIT_BRANCH == "refs/heads/main" ]; then
                     echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_PROD }}" >> .env.production
+                    echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_TOKEN" >> .env.production
+                    echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_TOKEN" >> .env.production
+                    echo "NEXT_PUBLIC_ENVIRONMENT=${'$'}ENVIRONMENT" >> .env.production
                 else
                     echo "NEXT_PUBLIC_NEWRELIC_AGENT_ID={{ project:NEXT_PUBLIC_NEWRELIC_AGENT_ID_DEV }}" >> .env.production
+                    echo "NEXT_PUBLIC_DELIVERY_ACCESS_TOKEN=${'$'}DELIVERY_ACCESS_DEV_TOKEN" >> .env.production
+                    echo "NEXT_PUBLIC_PREVIEW_ACCESS_TOKEN=${'$'}PREVIEW_ACCESS_DEV_TOKEN" >> .env.production
+                    echo "NEXT_PUBLIC_ENVIRONMENT=${'$'}ENVIRONMENT_DEV" >> .env.production
                 fi
 
                 if [ -z "${'$'}(ls -A node_modules)" ]; then
