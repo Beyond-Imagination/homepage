@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
           className={`flex justify-between px-12 fixed top-0 w-full bg-black`}
         ></Header>
         <Suspense>
-          <main>{children}</main>
+          <main className={`mt-12 md:mt-16`}>{children}</main>
         </Suspense>
         <Footer className={`px-12`}></Footer>
       </body>

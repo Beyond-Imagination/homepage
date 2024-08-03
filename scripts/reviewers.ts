@@ -1,4 +1,5 @@
-import { AddReviewParticipant, GetTeam } from '@/services'
+import { AddReviewParticipant } from '@/services/codereview'
+import { GetTeam } from '@/services/team'
 ;(async () => {
   try {
     const token = process.env.SPACE_AUTOMATION_AUTHORIZATION

@@ -2,6 +2,8 @@
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import CardList from '@/components/member/CardList.member'
 import useSWR from 'swr'
+import CircularProgress from '@mui/material/CircularProgress'
+import Box from '@mui/material/Box'
 
 export default function Member() {
   const { data, error, isLoading } = useSWR('/api/members', getMembers)
@@ -9,13 +11,17 @@ export default function Member() {
     return <div>failed to load</div>
   }
   if (isLoading) {
-    return <div>loading...</div>
+    return (
+      <Box className={`w-full h-dvh flex justify-center items-center`}>
+        <CircularProgress />
+      </Box>
+    )
   }
   return (
     <div style={{ backgroundColor: '#141416' }}>
-      <div className={`h-full mt-16 pb-24`}>
-        <CardList title="팀원 소개" members={data.remain_member}></CardList>
-        <CardList title="탈퇴 멤버" members={data.left_member}></CardList>
+      <div className={`h-full mt-12 md:mt-16 pb-24`}>
+        <CardList title="Member" members={data.remain_member}></CardList>
+        <CardList title="Former Member" members={data.left_member}></CardList>
       </div>
     </div>
   )

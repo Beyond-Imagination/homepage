@@ -5,13 +5,13 @@ const Footer = ({ className }) => {
   return (
     <footer className={`px-12`} style={{ background: '#111111' }}>
       <div className={`container py-16 mx-auto flex flex-wrap`}>
-        <div className="flex w-full justify-between">
-          <div className="w-1/8 pl-4 pr-20">
+        <div className="w-full grid md:grid-cols-4 grid-cols-2">
+          <div className="">
             <a className="flex title-font font-medium items-center justify-center text-gray-900">
               <img src="/images/logo2.png" alt="Logo" />
             </a>
           </div>
-          <div className="w-1/8 px-12">
+          <div className="md:col-span-2">
             <h2
               className={`text-[#5A5A5A] text-lg font-semibold mb-5 ${styles.FooterFont}`}
             >
@@ -52,37 +52,21 @@ const Footer = ({ className }) => {
               </li>
             </nav>
           </div>
-          <div className="ml-auto">
+          <div className="col-span-2 md:col-span-1 h-full flex flex-col flex-1">
             <Link href="mailto:team@beyond-imagination.kr">
               <div
+                className={`flex flex-col justify-between p-3 flex-1`}
                 style={{
-                  position: 'relative',
-                  width: '369px',
-                  height: '140px',
                   border: '1px solid #B4B4B4',
                   color: '#B4B4B4',
                   backgroundColor: '#111111',
                 }}
               >
-                <img
-                  className="mr-3 mt-3"
-                  src="/images/Arrow 1.png"
-                  alt="Logo"
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                  }}
-                />
+                <div className={`flex justify-end`}>
+                  <img className="" src="/images/Arrow 1.png" alt="Logo" />
+                </div>
 
-                <div
-                  className={`mb-3 ml-3 text-lg ${styles.FooterFont}`}
-                  style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                  }}
-                >
+                <div className={`text-lg ${styles.FooterFont}`}>
                   CONTACT
                   <br />
                   Beyond Imagination
@@ -106,7 +90,7 @@ const Footer = ({ className }) => {
             </div>
           </div>
         </div>
-        <div className="flex items-center mt-8">
+        <div className="flex items-center mt-8 flex-col md:flex-row">
           <div className="pl-4 title-font font-medium text-[#5A5A5A] text-sm font-semibold">
             © Beyond_Imagination.
           </div>

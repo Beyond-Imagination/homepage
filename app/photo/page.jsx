@@ -1,12 +1,13 @@
 'use client'
 import { contentfulClientApi } from '@/utils/contentfu-api'
 import PhotoAlbum from 'react-photo-album'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 import Captions from 'yet-another-react-lightbox/plugins/captions'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/plugins/captions.css'
+import styles from '../../styles/layout.module.css'
 
 function Photo() {
   const [index, setIndex] = useState(-1)
@@ -79,9 +80,16 @@ function Photo() {
   }
 
   return (
-    <div className style={{ backgroundColor: '#141416' }}>
-      <div className="px-40 photo-container">
-        <div className="pt-28 pb-10 flex justify-center">
+    <div className={`h-full`} style={{ backgroundColor: '#141416' }}>
+      <div className={`flex justify-center`}>
+        <h1
+          className={`text-4xl font-bold lg:my-12 my-6 text-gray-300 ${styles.HeaderFont}`}
+        >
+          Photo
+        </h1>
+      </div>
+      <div className="lg:px-40 md:px-24 px-6 photo-container">
+        <div className="pb-10 flex justify-center flex-wrap">
           <button
             className={getButtonClass('all')}
             onClick={() => setCategory('all')}
@@ -130,4 +138,5 @@ function Photo() {
     </div>
   )
 }
+
 export default Photo

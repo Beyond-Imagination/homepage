@@ -6,6 +6,8 @@ import ProjectDetailPhoto from '@/components/project/detail/ProjectDetailPhoto'
 import { fetchProjectById } from '@/lib/api'
 import useSWR from 'swr'
 import { ProjectDetailContent } from '@/components/project/detail/ProjectDetailContent'
+import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export default function ProjectDetail({ id }) {
   const [photoNum, selectPhotoNum] = useState(0)
@@ -21,7 +23,11 @@ export default function ProjectDetail({ id }) {
     return <div>failed to load</div>
   }
   if (isLoading) {
-    return <div>loading...</div>
+    return (
+      <Box className={`w-full h-dvh flex justify-center items-center`}>
+        <CircularProgress />
+      </Box>
+    )
   }
   const project = data
   return (

@@ -1,21 +1,30 @@
+interface TypographyProps {
+  type: 'h1' | 'h2' | 'h3' | 'h4' | 'body1' | 'body2'
+  children: React.ReactNode
+  color?: string
+  className?: string
+}
 const styles = {
   body1: {
     fontFamily: 'IBM Plex Sans KR, sans-serif',
-    fontWeight: 500, //Regular
+    fontWeight: 400, // Regular
     fontSize: 18,
-    letterSpacing: 0.5,
+    letterSpacing: '-0.02em',
+    lineHeight: '27px',
   },
   body2: {
     fontFamily: 'IBM Plex Sans KR, sans-serif',
-    fontWeight: 100, //Regular
+    fontWeight: 700, //Regular
     fontSize: 18,
     letterSpacing: 0.25,
   },
   h1: {
     fontFamily: 'IBM Plex Sans KR, sans-serif',
-    fontWeight: 300,
+    fontWeight: 800,
     fontSize: 96,
-    letterSpacing: -1.5,
+    letterSpacing: 0.25,
+    color: 'rgba(52, 52, 52, 0.4)',
+    lineHeight: '150px',
   },
   h2: {
     fontFamily: 'IBM Plex Sans KR, sans-serif',
@@ -31,13 +40,17 @@ const styles = {
   },
   h4: {
     fontFamily: 'IBM Plex Sans KR, sans-serif',
-    fontWeight: 400, //Regular
-    fontSize: 34,
-    letterSpacing: 0.25,
+    fontWeight: 600, //Regular
+    fontSize: 36,
   },
 }
 
-function Typography({ type, children, color, className }) {
+function SlideTypography({
+  type,
+  children,
+  color,
+  className,
+}: TypographyProps) {
   switch (type) {
     case 'h1':
       return (
@@ -80,4 +93,4 @@ function Typography({ type, children, color, className }) {
   }
 }
 
-export default Typography
+export default SlideTypography

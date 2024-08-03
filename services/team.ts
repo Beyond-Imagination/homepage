@@ -1,4 +1,4 @@
-import { Team } from '@/types'
+import { Team } from '@/types/space'
 
 export async function GetTeam(token: string, serverUrl: string): Promise<Team> {
   const url = `${serverUrl}/api/http/team-directory/teams/name:Beyond_Imagination?$fields=id,name,memberships(member(id,username))`

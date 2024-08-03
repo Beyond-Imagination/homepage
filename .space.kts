@@ -68,10 +68,10 @@ job("[FE] Merge Request") {
             env["REVIEW_ID"] = "{{ run:review.id }}"
             kotlinScript { api ->
                 api.space().chats.messages.sendMessage(
-                        channel = ChannelIdentifier.Review(ReviewIdentifier.Id(System.getenv("REVIEW_ID"))),
-                        content = ChatMessage.Text(
-                                text = api.executionUrl()
-                        )
+                    channel = ChannelIdentifier.Review(ReviewIdentifier.Id(System.getenv("REVIEW_ID"))),
+                    content = ChatMessage.Text(
+                        text = api.executionUrl()
+                    )
                 )
             }
         }
