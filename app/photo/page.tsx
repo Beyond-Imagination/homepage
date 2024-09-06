@@ -9,72 +9,84 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import 'yet-another-react-lightbox/plugins/captions.css'
 import styles from '../../styles/layout.module.css'
 
+interface Image {
+  src: string
+  width: number
+  height: number
+  caption: string
+  category: string
+}
+type Category = 'all' | 'meetings' | 'activities' | 'awards'
+
 function Photo() {
-  const [index, setIndex] = useState(-1)
-  const [images, setImages] = useState([])
-  const [category, setCategory] = useState('all')
+  const [index, setIndex] = useState<number>(-1)
+  const [images, setImages] = useState<Image[]>([])
+  const [category, setCategory] = useState<Category>('all')
+
   useEffect(() => {
     async function fetchData() {
-      //get Contetntful Data / Content Type: photos
-      const entries = await contentfulClientApi.getEntries({
-        select: 'fields',
-        content_type: 'photos',
-        order: '-fields.date',
-      })
+      try {
+        // Get Contentful Data / Content Type: photos
+        const entries = await contentfulClientApi.getEntries({
+          select: 'fields',
+          content_type: 'photos',
+          order: '-fields.date',
+        })
 
-      const map = new Map()
-      entries.includes.Asset.forEach((asset) => {
-        const key = asset.sys.id
-        const value = `https:${asset.fields.file.url}`
-        map.set(key, value)
-      })
+        const map = new Map<string, string>()
+        entries.includes.Asset.forEach((asset: any) => {
+          const key = asset.sys.id
+          const value = `https:${asset.fields.file.url}`
+          map.set(key, value)
+        })
 
-      entries.items.forEach((item) => {
-        item.fields.photo = map.get(item.fields.photo.sys.id)
-      })
+        entries.items.forEach((item: any) => {
+          item.fields.photo = map.get(item.fields.photo.sys.id)
+        })
 
-      //get Contentful Data / Media
-      const assets = await contentfulClientApi.getAssets({
-        select: 'fields',
-        limit: 1000,
-      })
+        // Get Contentful Data / Media
+        const assets = await contentfulClientApi.getAssets({
+          select: 'fields',
+          limit: 1000,
+        })
 
-      const photos = new Map()
-      assets.items.forEach((asset) => {
-        const key = `https:${asset.fields.file.url}`
-        const value = asset.fields.file.details.image
-        photos.set(key, value)
-      })
+        const photos = new Map<string, { width: number; height: number }>()
+        assets.items.forEach((asset: any) => {
+          const key = `https:${asset.fields.file.url}`
+          const value = asset.fields.file.details.image
+          photos.set(key, value)
+        })
 
-      const images = entries.items.map((v) => {
-        return {
+        const fetchedImages: Image[] = entries.items.map((v: any) => ({
           src: v.fields.photo,
-          width: photos.get(v.fields.photo).width,
-          height: photos.get(v.fields.photo).height,
+          width: photos.get(v.fields.photo)?.width || 0,
+          height: photos.get(v.fields.photo)?.height || 0,
           caption: v.fields.description,
           category: v.fields.category,
-        }
-      })
+        }))
 
-      setImages(images)
+        setImages(fetchedImages)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
     }
 
     fetchData()
   }, [])
 
-  const filterImagesByCategory = (category) => {
-    if (category === 'all') {
-      return images
-    }
-    return images.filter((image) => image.category === category)
+  const filterImagesByCategory = (selectedCategory: Category): Image[] => {
+    return selectedCategory === 'all'
+      ? images
+      : images.filter((image) => image.category === selectedCategory)
   }
 
   const displayedImages = filterImagesByCategory(category)
-  const getButtonClass = (cat) => {
-    let baseClass =
+
+  const getButtonClass = (cat: Category): string => {
+    const baseClass =
       'flex justify-center items-center w-40 h-14 rounded-lg font-medium text-lg cursor-pointer text-white bg-opacity-10 mx-2 tracking-wide'
-    let activeClass = 'bg-white bg-opacity-10'
-    let hoverClass = 'hover:bg-white hover:bg-opacity-10'
+    const activeClass = 'bg-white bg-opacity-10'
+    const hoverClass = 'hover:bg-white hover:bg-opacity-10'
 
     return `${baseClass} ${category === cat ? activeClass : hoverClass}`
   }
@@ -125,9 +137,10 @@ function Photo() {
           />
 
           <Lightbox
-            slides={displayedImages.map((v) => {
-              return { src: v.src, title: v.caption }
-            })}
+            slides={displayedImages.map((v) => ({
+              src: v.src,
+              title: v.caption,
+            }))}
             open={index >= 0}
             index={index}
             close={() => setIndex(-1)}
