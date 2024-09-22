@@ -24,14 +24,15 @@ interface Photo {
 }
 
 export interface Project {
+  attachments: any[]
   description: RichText
+  end_at: string
   github: any[]
   members: string[]
   name: string
   photos: any
   prizes: any
   start_at: string
-  end_at: string
   tech_stacks: string[]
 }
 const assetUrlMap = new Map<string, string>()

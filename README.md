@@ -14,7 +14,7 @@ yarn dev
 
 브라우저를 열어서 [http://localhost:3000](http://localhost:3000)에 접속하여 결과 확인하기 
 
-You can start editing the page by modifying `pages/ProjectDetail.jsx`. The page auto-updates as you edit the file.
+You can start editing the page by modifying `pages/ProjectDetail.tsx`. The page auto-updates as you edit the file.
 
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
