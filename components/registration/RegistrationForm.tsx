@@ -59,7 +59,6 @@ function RegistrationForm() {
               id="coverLetter"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
               placeholder="자기소개를 입력하세요"
-              rows="4"
             />
           </div>
           <button

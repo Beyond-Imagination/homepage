@@ -1,13 +1,17 @@
 'use client'
 import ProjectCardList from '@/components/project/CardList.project'
-import styles from '../../styles/layout.module.css'
-import { fetchProjects } from '@/lib/api'
+import { fetchProjects, Project as ProjectType } from '@/lib/api'
 import useSWR from 'swr'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
+import { Entry } from 'contentful'
+import { FC } from 'react' // Assuming you have a Project type defined
 
-function Project() {
-  const { data, error, isLoading } = useSWR('/api/projects', fetchProjects)
+const Project: FC = () => {
+  const { data, error, isLoading } = useSWR<Entry<ProjectType>[], Error>(
+    '/api/projects',
+    fetchProjects
+  )
 
   if (error) {
     return <div>failed to load</div>
@@ -28,13 +32,13 @@ function Project() {
     >
       <div className={`flex justify-center`}>
         <h1
-          className={`text-4xl font-bold lg:my-12 my-6 text-gray-300 ${styles.HeaderFont}`}
+          className={`text-4xl font-bold lg:my-12 my-6 text-gray-300 header-font`}
         >
           About Projects
         </h1>
       </div>
       <div className="lg:px-40 md:px-24 px-6 pb-24">
-        <ProjectCardList projects={data}></ProjectCardList>
+        <ProjectCardList projects={data ?? []}></ProjectCardList>
       </div>
     </div>
   )

@@ -1,24 +1,18 @@
 'use client'
-
 import Github from '@/components/project/Github.project'
 import Description from '@/components/project/Description.project'
 import Name from '@/components/project/Name.project'
 import { useRouter } from 'next/navigation'
+import { Project } from '@/lib/api'
+import { Entry } from 'contentful'
 
-function CardProject({ item }) {
+interface CardProjectProps {
+  item: Entry<Project>
+}
+const CardProject: React.FC<CardProjectProps> = ({ item }) => {
   const router = useRouter()
-  const {
-    attachments,
-    description,
-    end_at,
-    github,
-    members,
-    name,
-    photos,
-    prizes,
-    start_at,
-    tech_stacks,
-  } = item.fields
+  const { description, github, name, photos } = item.fields
+
   return (
     <div
       className={`p-2 `}
@@ -37,7 +31,6 @@ function CardProject({ item }) {
           height: '20rem',
           width: '100%',
         }}
-        alt={`${name} image`}
         className={`flex justify-center mb-3`}
       />
 
@@ -45,7 +38,7 @@ function CardProject({ item }) {
         {name && (
           <Name
             name={name}
-            onClick={(event) => {
+            onClick={() => {
               router.push(`/projects/detail?id=${item.sys.id}`)
             }}
           ></Name>

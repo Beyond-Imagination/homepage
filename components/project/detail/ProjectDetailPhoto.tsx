@@ -1,41 +1,50 @@
-const ProjectDetailPhoto = ({ project, photoNum, selectPhotoNum }) => {
+import { Project } from '@/lib/api'
+
+interface ProjectDetailPhotoProps {
+  project: Project
+  photoNum: number
+  selectPhotoNum: (num: number) => void
+}
+
+const ProjectDetailPhoto: React.FC<ProjectDetailPhotoProps> = ({
+  project,
+  photoNum,
+  selectPhotoNum,
+}) => {
   return (
     <div id="default-carousel" className="relative">
       <div className="relative h-[720px] overflow-hidden rounded-lg">
-        {project.photos.map((value, index) => {
-          return (
-            <div
-              key={index}
-              className={`duration-700 ease-in-out ${
-                index === photoNum ? '' : 'hidden'
-              }`}
-            >
-              <img
-                src={value}
-                className="absolute block h-[720px] object-fill -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
-                alt="..."
-              />
-            </div>
-          )
-        })}
+        {project.photos.map((value: any, index: any) => (
+          <div
+            key={index}
+            className={`duration-700 ease-in-out ${
+              index === photoNum ? '' : 'hidden'
+            }`}
+          >
+            <img
+              src={value}
+              className="absolute block h-[720px] object-fill -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+              alt={`Photo ${index + 1}`}
+            />
+          </div>
+        ))}
       </div>
 
       <div className="absolute z-50 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-        {project.photos.map((value, index) => {
-          return (
-            <button
-              key={index}
-              type="button"
-              className={`w-3 h-3 rounded-full ${
-                index === photoNum ? 'bg-amber-50' : 'bg-[#353F4D]'
-              }`}
-              onClick={() => {
-                selectPhotoNum(index)
-              }}
-            ></button>
-          )
-        })}
+        {project.photos.map((_: any, index: any) => (
+          <button
+            key={index}
+            type="button"
+            className={`w-3 h-3 rounded-full ${
+              index === photoNum ? 'bg-amber-50' : 'bg-[#353F4D]'
+            }`}
+            onClick={() => {
+              selectPhotoNum(index)
+            }}
+          ></button>
+        ))}
       </div>
+
       <button
         type="button"
         style={{ left: '10%' }}
@@ -63,6 +72,7 @@ const ProjectDetailPhoto = ({ project, photoNum, selectPhotoNum }) => {
           <span className="sr-only">Previous</span>
         </span>
       </button>
+
       <button
         type="button"
         style={{ right: '10%' }}
