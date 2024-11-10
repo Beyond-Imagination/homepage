@@ -5,10 +5,10 @@ import { useRef } from 'react'
 interface HistoryItemProps {
   data: {
     fields: {
-      date: string;
-      text: string;
-    };
-  };
+      date: string
+      text: string
+    }
+  }
 }
 
 export default function HistoryItem({ data }: HistoryItemProps) {

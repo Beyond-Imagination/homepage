@@ -7,12 +7,12 @@ import { Entry } from 'contentful'
 
 export interface HistoryEntry {
   fields: {
-    date: string;
-    text: string;
-  };
+    date: string
+    text: string
+  }
   sys: {
-    id: string;
-  };
+    id: string
+  }
 }
 
 function History() {
