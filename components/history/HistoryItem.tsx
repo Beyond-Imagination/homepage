@@ -2,10 +2,19 @@ import styles from '../../styles/history.module.css'
 import ScrollEvent from '@/components/history/ScrollEvent'
 import { useRef } from 'react'
 
-export default function HistoryItem(props) {
-  const data = props.data
-  const scrollRef = useRef(null)
+interface HistoryItemProps {
+  data: {
+    fields: {
+      date: string
+      text: string
+    }
+  }
+}
+
+export default function HistoryItem({ data }: HistoryItemProps) {
+  const scrollRef = useRef<HTMLDivElement>(null)
   ScrollEvent(scrollRef)
+
   return (
     <div className={`${styles.historyItem}`} ref={scrollRef}>
       <div className={`${styles.historyItemContent}`}>
